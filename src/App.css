@@ -31,3 +31,7 @@
     transform: rotate(360deg);
   }
 }
+
+.MuiBottomNavigationAction-root.Mui-selected {
+  color: #630663 !important;
+}
