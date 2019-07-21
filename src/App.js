@@ -1,19 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuAppBar from './MenuAppBar';
-import ImgMediaCard from './ImgMediaCard';
-import logo from './logo.svg';
 import BottomNavigation from './BottomNavigation';
 import FixedContainer from './FixedContainer';
-import PaperSheet from './PaperSheet';
-import SimpleCard from './SimpleCard';
-import TextCard from './TextCard';
-import Typography from '@material-ui/core/Typography';
+import ProfileSummary from './ProfileSummary';
+import colors from './colorTheme';
 import './App.css';
 
 const useStyles = makeStyles({
   app: {
-    backgroundColor: '#ED8BA8'
+    backgroundColor: colors.p3
   },
   day: {
     fontSize: '20px',
@@ -44,21 +39,11 @@ function App() {
   const classes = useStyles();
   return (
     <div className={classes.app}>
-        <PaperSheet src="https://unlockwomenspower.files.wordpress.com/2012/06/ratidzo-mambo-head-shot-1.jpg?w=390&h=586&zoom=2" />
-        <div className={classes.pullUp}>
-          <SimpleCard>
-            <Typography className={classes.day}>Day 8</Typography>
-            <Typography>Keep working towards your goal!</Typography>          
-            <div className={classes.progressBar}>
-              <div className={classes.progress}/>
-            </div>
-          </SimpleCard>
-          <TextCard />
-          <TextCard />
-          <TextCard />
-          <FixedContainer />
-          <BottomNavigation />
-        </div>
+        <ProfileSummary 
+          src="https://unlockwomenspower.files.wordpress.com/2012/06/ratidzo-mambo-head-shot-1.jpg?w=390&h=586&zoom=2" />
+
+        <FixedContainer />
+        <BottomNavigation />
     </div>
   );
 }
