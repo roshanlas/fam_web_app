@@ -2,7 +2,6 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Logo from './Logo';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import colors from './colorTheme';
@@ -14,7 +13,8 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: 'url(images/splash-page.jpeg)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    height: '100vh'
+    minHeight: '100vh',
+    height: '100%'
   },
   container: {
     width: '100%', // Fix IE 11 issue.
@@ -82,7 +82,9 @@ const Main = () => {
             </Link>
           </form>
 
-          <Link className={classes.aboutLink} component="button" variant="body1">
+          <Link className={classes.aboutLink} 
+          component={RouterLink} variant="body1"
+          to="/about">
             About Female and More &gt;&gt;&gt;
           </Link>
 
