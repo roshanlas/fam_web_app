@@ -4,7 +4,7 @@ export const fields = {
     repeatPassword: {comp: null, error: false, label: 'Repeat Password', required: true}, 
     firstName: {comp: null, error: false, label: 'First Name', required: true}, 
     lastName: {comp: null, error: false, label: 'Last Name', required: true},
-    dob: {comp: null, error: false, label: 'Date of Birth', required: true}, 
+    dob: {comp: null, error: false, label: 'Date of Birth dd/mm/yyyy', required: true}, 
     gender: {comp: null, error: false, label: 'Gender', required: true}, 
     marriageStatus: {comp: null, error: false, label: 'Marriage Status', required: false}, 
     occupation: {comp: null, error: false, label: 'Occupation', required: false}, 

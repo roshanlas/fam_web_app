@@ -21,14 +21,14 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100vh'
   },
   header: {
-    position: 'relative'
+    position: 'relative',
   },
   inputField: {
     display: 'block',
     backgroundColor: colors.gray4,
     border: `0.1rem solid ${colors.green}`,
-    borderRadius: '1rem',
-    padding: '0.6rem 1.2rem',
+    borderRadius: '1.6rem',
+    padding: '0.8rem 1.2rem',
     margin: '0 0 1.2rem',
     fontSize: '1.4rem',
     width: '100%',
@@ -50,16 +50,32 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     textTransform: 'none',
     fontSize: '1.2rem',
+    fontFamily: 'Oswald, sans-serif !important',
     width: '100%',
     maxWidth: '12rem',
-    fontWeight: 'bold',
     display: 'block',
     margin: '2.4rem auto 1.6rem',
     padding: '0.8rem 0.2rem',
     '&:hover': {
       backgroundColor: colors.g3,
     }
-},
+  },
+  readMore: {
+    textAlign: 'center',
+    backgroundColor: colors.g3,
+    borderRadius: '1.4rem',
+    color: 'white',
+    textTransform: 'none',
+    fontSize: '1.2rem',
+    fontFamily: 'Oswald, sans-serif !important',
+    width: '100%',
+    display: 'block',
+    margin: '2.4rem auto 1.6rem',
+    padding: '0.8rem 0.2rem',
+    '&:hover': {
+      backgroundColor: colors.g3,
+    }
+  },
 }));
 
 const SignUp = () => {
@@ -67,7 +83,7 @@ const SignUp = () => {
   const [state, setState] = useState({
     fields:fields, 
     errors: null,
-    successMessage: false,
+    successMessage: true,
     errorMessage: false
   });
   const classes = useStyles();
@@ -152,20 +168,20 @@ const SignUp = () => {
         }
 
         { 
-          state.successMessage && 
+          !state.successMessage && 
             <div>
               <p>
               You have been registered successfully! You will be receiving an email
               from us shortly.
               </p>
-              <Link to="/login" component={RouterLink} className={`${classes.signup}`}>
-                Read the 30 day challenge
+              <Link to="/30-day-challenge" component={RouterLink} className={`${classes.readMore}`}>
+                Read the 30 Day Challenge
               </Link>
             </div> 
         }
 
         { 
-          !state.successMessage && 
+          state.successMessage && 
           <Button onClick={doSignUp} className={`sign-up-button ${classes.signup}`}>
             Sign Up
           </Button>
