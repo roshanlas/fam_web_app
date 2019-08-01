@@ -36,7 +36,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   error: {
-    border: 'solid 1px red'
+    borderColor: 'red'
+  },
+  errorMsg: {
+    color: 'red',  
+    fontSize: '1.4rem',
+    margin: 0
   },
   signup: {
     backgroundColor: colors.g3,
@@ -44,6 +49,7 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     textTransform: 'none',
     fontSize: '1.2rem',
+    width: '100%',
     maxWidth: '12rem',
     fontWeight: 'bold',
     display: 'block',
@@ -57,15 +63,18 @@ const useStyles = makeStyles(theme => ({
 
 const SignUp = () => {
 
-  const [state, setState] = useState({fields:fields, errors: null});
+  const [state, setState] = useState({
+    fields:fields, 
+    errors: null,
+  });
   const classes = useStyles();
+
   const doSignUp = () => {
 
     let formData = populateFormData(state.fields);
     let validation = validateFields(formData);
 
     if(Object.keys(validation).length>0) {
-      console.log("ERROR", validation);
       setState({...state, errors: validation})
       return;
     } else {
@@ -126,6 +135,13 @@ const SignUp = () => {
               )
             }
         )}
+
+        {
+          state.errors && 
+          Object.keys(state.errors).map(
+            field=><p className={classes.errorMsg}>{state.errors[field]}</p>
+          )
+        }
 
         <Button onClick={doSignUp} className={`sign-up-button ${classes.signup}`}>
           Sign Up
