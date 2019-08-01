@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import InputBase from '@material-ui/core/InputBase';
@@ -7,6 +7,9 @@ import Logo from './Logo';
 import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
+import { fields, populateFormData, validateFields, submitData } from './email-utils';
+
+console.log('process', process.env.REACT_APP_API_URL)
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -32,6 +35,9 @@ const useStyles = makeStyles(theme => ({
       outline: 'none'
     }
   },
+  error: {
+    border: 'solid 1px red'
+  },
   signup: {
     backgroundColor: colors.g3,
     borderRadius: '1.4rem',
@@ -49,44 +55,24 @@ const useStyles = makeStyles(theme => ({
 },
 }));
 
-
 const SignUp = () => {
+
+  const [state, setState] = useState({fields:fields, errors: null});
   const classes = useStyles();
-  let fields = {
-    email: {comp: null, label: 'Email'}, 
-    password: {comp: null, label: 'Password'}, 
-    repeatPassword: {comp: null, label: 'Repeat Password'}, 
-    firstName: {comp: null, label: 'First Name'}, 
-    lastName: {comp: null, label: 'Last Name'},
-    dob: {comp: null, label: 'Date of Birth'}, 
-    gender: {comp: null, label: 'Gender'}, 
-    marriageStatus: {comp: null, label: 'Marriage Status'}, 
-    occupation: {comp: null, label: 'Occupation'}, 
-    residence: {comp: null, label: 'Residence'}, 
-    city: {comp: null, label: 'City'},
-    homeAddress: {comp: null, label: 'Home Address'}, 
-    postCode: {comp: null, label: 'Post Code'}
-  };
+  const doSignUp = () => {
 
-  let formData;
+    let formData = populateFormData(state.fields);
+    let validation = validateFields(formData);
 
-  const registerUser = () => {
+    if(Object.keys(validation).length>0) {
+      console.log("ERROR", validation);
+      setState({...state, errors: validation})
+      return;
+    } else {
+      setState({...state, errors: null})
+    }
 
-    formData = {};
-    Object.keys(fields).forEach(
-      f=>Object.assign(formData, { [`${f}`]: fields[`${f}`].comp.value })
-    )
-
-    fetch(
-        // URL
-        'http://localhost:3011/register', 
-        // Data
-        {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: {"Content-Type": "application/json"}
-        }
-    )
+    submitData(formData)
     .then(res => {
         if(res.status === "400") {
             // Handle the error
@@ -114,7 +100,7 @@ const SignUp = () => {
   }
 
   return (
-    <div className={classes.main}>
+    <div className={`SignUp ${classes.main}`}>
       <CssBaseline />
       <div className={classes.header}>
           <BackButton to="/" />
@@ -124,15 +110,24 @@ const SignUp = () => {
         <h1>Join Female and More</h1>
 
         {Object.keys(fields).map(
-          field=><input type="text"
-            key={field}
-            ref={comp=>fields[field].comp = comp}
-            className={classes.inputField}
-            placeholder={fields[field].label}
-          />
+          field=>{
+              let error;
+              if(state.errors) {
+                error = state.errors[field] ? classes.error : '';
+              }
+              let required = fields[field].required ? 'required' : '';
+              return (
+                <input type="text"
+                  key={field}
+                  ref={comp=>fields[field].comp = comp}
+                  className={`${field} ${classes.inputField} ${error} ${required}`}
+                  placeholder={fields[field].label}
+                />
+              )
+            }
         )}
 
-        <Button onClick={registerUser} className={classes.signup}>
+        <Button onClick={doSignUp} className={`sign-up-button ${classes.signup}`}>
           Sign Up
         </Button>
       </Container>
