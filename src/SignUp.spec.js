@@ -1,6 +1,6 @@
 import React from 'react';
 import SignUp from './SignUp';
-import {populateFormData, validateFields } from './email-utils';
+import {populateFormData, validateFields } from './registration-utils';
 import {  
     MemoryRouter,
 } from 'react-router';

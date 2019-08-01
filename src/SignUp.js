@@ -8,7 +8,7 @@ import Logo from './Logo';
 import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
-import { fields, populateFormData, validateFields, submitData } from './email-utils';
+import { fields, populateFormData, validateFields, submitData } from './registration-utils';
 
 console.log('process', process.env.REACT_APP_API_URL)
 
@@ -83,8 +83,9 @@ const SignUp = () => {
   const [state, setState] = useState({
     fields:fields, 
     errors: null,
-    successMessage: true,
-    errorMessage: false
+    successMessage: false,
+    errorMessage: false,
+    errorDescription: ''
   });
   const classes = useStyles();
 
@@ -99,29 +100,40 @@ const SignUp = () => {
     }
 
     submitData(formData)
-    .then(res => {
-        if(res.status === "400") {
-            // Handle the error
-            setState({ 
-                ...state, 
-                errors: null,
-                successMessage: false,
-                errorMessage: true
-            })
-        } else {
+    .then(async res => {
+        let ret = await res.json();
+        if(res.ok) {
             // Parse json data 
-            res.json();
             // Show success message
             setState({ 
                 ...state, 
                 errors: null,
+                errorMessage: false,
+                errorDescription: '',
                 successMessage: true,
-                errorMessage: false
             })
         }
+        else {
+          console.log(res.status)
+          // Handle the error
+          setState({ 
+              ...state, 
+              errors: null,
+              errorMessage: true,
+              errorDescription: ret.msg,
+              successMessage: false,
+          })
+      }
     }) 
     .catch(err => {
         console.log('err', err);
+        setState({ 
+          ...state, 
+          errors: null,
+          successMessage: false,
+          errorMessage: true,
+          errorDescription: ''
+      })
     })
   }
 
@@ -162,13 +174,14 @@ const SignUp = () => {
 
         { 
           state.errorMessage && 
-          <div>
-            An error occured. Please try again.
+          <div className={classes.errorMsg}>
+            An error occured. Please try again. <br/>
+            {state.errorDescription}
           </div> 
         }
 
         { 
-          !state.successMessage && 
+          state.successMessage && 
             <div>
               <p>
               You have been registered successfully! You will be receiving an email
@@ -181,7 +194,7 @@ const SignUp = () => {
         }
 
         { 
-          state.successMessage && 
+          !state.successMessage && 
           <Button onClick={doSignUp} className={`sign-up-button ${classes.signup}`}>
             Sign Up
           </Button>
