@@ -80,6 +80,7 @@ export default function MenuAppBar() {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>About</MenuItem>
               </Menu>
             </div>
           )}
@@ -88,3 +89,4 @@ export default function MenuAppBar() {
     </div>
   );
 }
+

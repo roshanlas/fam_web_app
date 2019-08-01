@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Main from './Main'
 import SignUp from './SignUp'
+import About from "./About"
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Switch>
             <Route path="/" exact component={Main}/>
             <Route path="/signup" component={SignUp} />
+            <Route path="/about" component={About} />
         </Switch>
     </Router>
   );

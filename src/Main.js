@@ -8,6 +8,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 const useStyles = makeStyles(theme => ({
   main: {
     backgroundColor: colors.p3,
@@ -72,7 +73,7 @@ const Main = () => {
   return (
     <div className={classes.main}>
       <CssBaseline />
-      <Container maxWidth="xs">
+      <Container>
         <Logo />
       </Container>
       <Container className={classes.container} component="main" maxWidth="xs">
@@ -82,7 +83,7 @@ const Main = () => {
             </Link>
           </form>
 
-          <Link className={classes.aboutLink} component="button" variant="body1">
+          <Link className={classes.aboutLink} component={RouterLink} variant="body1" to="/about">
             About Female and More &gt;&gt;&gt;
           </Link>
 
