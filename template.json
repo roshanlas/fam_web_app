@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "virtualNetworks_FAM_Net_name": {
+        "defaultValue": "FAM-Net",
+        "type": "string"
+      }
+    },
+    "variables": {},
+    "resources": [
+      {
+        "type": "Microsoft.Network/virtualNetworks",
+        "apiVersion": "2019-04-01",
+        "name": "[parameters('virtualNetworks_FAM_Net_name')]",
+        "location": "centralus",
+        "properties": {
+          "provisioningState": "Succeeded",
+          "resourceGuid": "a5b3d0d1-bbb9-44d6-8689-1c6a9caf9f4f",
+          "addressSpace": {
+            "addressPrefixes": ["10.1.0.0/16"]
+          },
+          "subnets": [
+            {
+              "name": "AWS-Subnet",
+              "etag": "W/\"ad4b671b-2cb6-42a8-bf88-9cc84aacd75f\"",
+              "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.1.0.0/24",
+                "delegations": []
+              }
+            }
+          ],
+          "virtualNetworkPeerings": [],
+          "enableDdosProtection": false,
+          "enableVmProtection": false
+        }
+      },
+      {
+        "type": "Microsoft.Network/expressRouteCircuits",
+        "apiVersion": "2019-04-01",
+        "name": "[concat(parameters('virtualNetworks_FAM_Net_name'), '/AWS-Subnet')]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_FAM_Net_name'))]"
+        ],
+        "properties": {
+          "provisioningState": "Succeeded",
+          "addressPrefix": "10.1.0.0/24",
+          "delegations": []
+        }
+      }
+    ]
+  }

@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: 'url(images/splash-page.jpeg)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    height: '100vh'
+    minHeight: '100vh',
+    height: '100%'
   },
   container: {
     width: '100%', // Fix IE 11 issue.
@@ -38,14 +39,22 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     fontWeight: 'bold'
   },
+  tcs: {
+    display: 'block',
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  disclaimer: {
+    color: 'white'
+  },
   signup: {
       backgroundColor: colors.g3,
       borderRadius: '1.4rem',
       color: 'white',
       textTransform: 'none',
-      fontSize: '1.2rem',
+      fontSize: '1.4rem',
+      width: '100%',
       maxWidth: '12rem',
-      fontWeight: 'bold',
       display: 'block',
       margin: '2.4rem auto 1.6rem',
       padding: '0.8rem 0.2rem'
@@ -78,17 +87,24 @@ const Main = () => {
       <Container className={classes.container} component="main" maxWidth="xs">
           <form className={classes.form} noValidate>
             <Link className={classes.signup} component={RouterLink} to="/signup">
-              Sign Up
+                Sign Up
             </Link>
           </form>
 
-          <Link className={classes.aboutLink} component="button" variant="body1">
+          <Link className={classes.aboutLink} 
+          component={RouterLink} variant="body1"
+          to="/about">
             About Female and More &gt;&gt;&gt;
           </Link>
 
-          <Link className={classes.signIn} component="button">
-            Sign In
-          </Link>
+          {
+            false && 
+            <Link className={classes.signIn} component="button">
+              Sign In
+            </Link>
+          }
+
+          <p className={classes.disclaimer}>By creating an account I accept Female and More <Link to="/terms-and-conditions" className={classes.tcs} component={RouterLink}>Terms &amp; Conditions</Link></p>
       </Container>
     </div>
   );
