@@ -76,12 +76,18 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: colors.g3,
     }
   },
+  loading: {
+    textAlign: 'center',
+    fontSize: '1.6rem',
+    fontWeight: 'bold'
+  }
 }));
 
 const SignUp = () => {
 
   const [state, setState] = useState({
     fields:fields, 
+    loading : false,
     errors: null,
     successMessage: false,
     errorMessage: false,
@@ -99,6 +105,8 @@ const SignUp = () => {
       return;
     }
 
+    setState({...state, loading: true})
+
     submitData(formData)
     .then(async res => {
         let ret = await res.json();
@@ -107,6 +115,7 @@ const SignUp = () => {
             // Show success message
             setState({ 
                 ...state, 
+                loading: false,
                 errors: null,
                 errorMessage: false,
                 errorDescription: '',
@@ -118,6 +127,7 @@ const SignUp = () => {
           // Handle the error
           setState({ 
               ...state, 
+              loading: false,
               errors: null,
               errorMessage: true,
               errorDescription: ret.msg,
@@ -129,6 +139,7 @@ const SignUp = () => {
         console.log('err', err);
         setState({ 
           ...state, 
+          loading: false,
           errors: null,
           successMessage: false,
           errorMessage: true,
@@ -194,11 +205,13 @@ const SignUp = () => {
         }
 
         { 
-          !state.successMessage && 
+          !state.successMessage && !state.loading &&
           <Button onClick={doSignUp} className={`sign-up-button ${classes.signup}`}>
             Sign Up
           </Button>
         }
+
+        { state.loading && <p className={classes.loading}>Please wait...</p>}
 
 
       </Container>
