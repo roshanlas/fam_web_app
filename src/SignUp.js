@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import InputBase from '@material-ui/core/InputBase';
+import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Logo from './Logo';
 import { BackButton } from './Heading';
@@ -66,6 +67,8 @@ const SignUp = () => {
   const [state, setState] = useState({
     fields:fields, 
     errors: null,
+    successMessage: false,
+    errorMessage: false
   });
   const classes = useStyles();
 
@@ -77,30 +80,28 @@ const SignUp = () => {
     if(Object.keys(validation).length>0) {
       setState({...state, errors: validation})
       return;
-    } else {
-      setState({...state, errors: null})
     }
 
     submitData(formData)
     .then(res => {
         if(res.status === "400") {
             // Handle the error
-            // setLocalState({ 
-            //     ...localState, 
-            //     successMessage: false,
-            //     errorMessage: true
-            // })
-
+            setState({ 
+                ...state, 
+                errors: null,
+                successMessage: false,
+                errorMessage: true
+            })
         } else {
             // Parse json data 
             res.json();
-
             // Show success message
-            // setLocalState({ 
-            //     ...localState, 
-            //     successMessage: true,
-            //     errorMessage: false
-            // })
+            setState({ 
+                ...state, 
+                errors: null,
+                successMessage: true,
+                errorMessage: false
+            })
         }
     }) 
     .catch(err => {
@@ -139,13 +140,38 @@ const SignUp = () => {
         {
           state.errors && 
           Object.keys(state.errors).map(
-            field=><p className={classes.errorMsg}>{state.errors[field]}</p>
+            field=><p key={`${field}1`} className={classes.errorMsg}>{state.errors[field]}</p>
           )
         }
 
-        <Button onClick={doSignUp} className={`sign-up-button ${classes.signup}`}>
-          Sign Up
-        </Button>
+        { 
+          state.errorMessage && 
+          <div>
+            An error occured. Please try again.
+          </div> 
+        }
+
+        { 
+          state.successMessage && 
+            <div>
+              <p>
+              You have been registered successfully! You will be receiving an email
+              from us shortly.
+              </p>
+              <Link to="/login" component={RouterLink} className={`${classes.signup}`}>
+                Read the 30 day challenge
+              </Link>
+            </div> 
+        }
+
+        { 
+          !state.successMessage && 
+          <Button onClick={doSignUp} className={`sign-up-button ${classes.signup}`}>
+            Sign Up
+          </Button>
+        }
+
+
       </Container>
     </div>
   );
