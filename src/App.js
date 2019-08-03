@@ -12,6 +12,7 @@ import Challenge from './Challenge';
 import TermsConditions from './TermsConditions';
 import './App.css';
 import Profile from './Profile';
+import ForgotPassword from './ForgotPassword';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" exact component={Main}/>
             <Route path="/signup" component={SignUp} />
             <Route path="/sign-in" component={SignIn} />
+            <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/about" component={About} />
             <Route path="/30-day-challenge" component={Challenge} />
             <Route path="/terms-and-conditions" component={TermsConditions} />

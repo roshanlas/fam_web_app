@@ -9,7 +9,7 @@ import Logo from './Logo';
 import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
-import { fields, populateFormData, validateFields, submitData } from './sign-in-utils';
+import { fields, populateFormData, validateFields, submitData } from './forgot-pass-utils';
 
 console.log('process', process.env.REACT_APP_API_URL)
 
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.4rem',
     margin: 0
   },
-  signin: {
+  forgotPass: {
     backgroundColor: colors.g3,
     borderRadius: '1.4rem',
     color: 'white',
@@ -66,25 +66,14 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.6rem',
     fontWeight: 'bold'
   },
-  register: {
+  successMessage: {
     textAlign: 'center',
-  },
-  registerLink: {
-    fontFamily: 'Oswald, sans-serif !important',
-    fontWeight: 'normal',
-    color: '#707070 !important',
-    fontSize: '20px', 
-  },
-  forgotPass: {
-    textAlign: 'right',
-  },
-  forgotPassLink: {
     fontSize: '18px',
     color: colors.y1,
-  }
+  },
 }));
 
-const SignIn = () => {
+const ForgotPassword = () => {
 
   const [state, setState] = useState({
     fields:fields, 
@@ -97,7 +86,7 @@ const SignIn = () => {
   });
   const classes = useStyles();
 
-  const doSignIn = () => {
+  const doSubmit = () => {
 
     let formData = populateFormData(state.fields);
     let validation = validateFields(formData);
@@ -156,14 +145,14 @@ const SignIn = () => {
   }
 
   return (
-    <div className={`SignIn ${classes.main}`}>
+    <div className={`ForgotPassword ${classes.main}`}>
       <CssBaseline />
       <div className={classes.header}>
-          <BackButton to="/" />
+          <BackButton to="/sign-in" />
           <Logo />
         </div>
       <Container maxWidth="xs">
-        <h1>Welcome back!</h1>
+        <h1>Forgot Password?</h1>
 
         {Object.keys(fields).map(
           field=>{
@@ -183,12 +172,6 @@ const SignIn = () => {
             }
         )}
 
-        <p className={classes.forgotPass}>
-          <Link className={classes.forgotPassLink} component={RouterLink} variant="body1" to="/forgot-password">
-            Forgot Password?
-          </Link>
-        </p>
-
         {
           state.errors && 
           Object.keys(state.errors).map(
@@ -205,37 +188,26 @@ const SignIn = () => {
         }
 
         { 
-          state.successMessage && 
-            <div>
-              <p>
-              You have been registered successfully! You will be receiving an email
-              from us shortly.
-              </p>
-            </div> 
-        }
-
-        { 
           !state.successMessage && !state.loading &&
-          <Button onClick={doSignIn} className={`sign-in-button ${classes.signin}`}>
-            Sign In
+          <Button onClick={doSubmit} className={`sign-in-button ${classes.forgotPass}`}>
+            Submit
           </Button>
-        }
-
-        { 
-          !state.successMessage && !state.loading &&
-          <p className={classes.register}>
-            <Link className={classes.registerLink} component={RouterLink} variant="body1" to="/signup">
-              I am new here
-            </Link>
-          </p>
         }
 
         { state.loading && <p className={classes.loading}>Please wait...</p>}
 
+        { 
+          state.successMessage && 
+            <div>
+              <p className={classes.successMessage}>
+                A link to recover your password will be sent to you shortly
+              </p>
+            </div> 
+        }
 
       </Container>
     </div>
   );
 }
 
-export default SignIn;
+export default ForgotPassword;
