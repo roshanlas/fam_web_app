@@ -3,6 +3,7 @@ import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { makeStyles } from '@material-ui/core/styles';
+import colors from './colorTheme';
 
 const useStyles = makeStyles(theme => ({
     backButton: {
@@ -11,7 +12,8 @@ const useStyles = makeStyles(theme => ({
         height: '1.6rem',
         width: '1.6rem',
         display: 'block',
-        position: 'absolute'
+        position: 'absolute',
+        color: colors.y1,
     }
   }));
 
