@@ -104,11 +104,6 @@ const Login = () => {
       }})
   }
 
-  useEffect(()=>{
-      console.log(globalState.user);
-      localStorage.setItem('user', globalState.user.name)
-  }, [globalState])
-
   return (
     <div className={`Login ${classes.main}`}>
       <CssBaseline />

@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import {  
     BrowserRouter as Router,
     Route,
@@ -20,6 +20,14 @@ const App = () => {
   const [state, setState] = useState({
     user: {}
   });
+
+  useEffect(()=>{
+    // If logged in
+    // localStorage.setItem('token', 'abcdef12345');
+
+    // Else if logged out
+    // localStorage.clear()
+  })
 
   return (
     <AppContext.Provider value={[state, setState]} >
