@@ -43,8 +43,7 @@ export const validateFields = (formData) => {
  */
 export const submitData = async (formData) => {
     return await fetch(
-        // TODO Update URL
-        `${process.env.REACT_APP_API_URL}/register`, 
+        `${process.env.REACT_APP_API_URL}/login`,
         // Data
         {
             method: 'POST',

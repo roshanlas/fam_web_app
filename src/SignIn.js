@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
@@ -10,6 +10,7 @@ import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './sign-in-utils';
+import { AppContext } from './App';
 
 console.log('process', process.env.REACT_APP_API_URL)
 
@@ -86,8 +87,10 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = () => {
 
+  const [globalState, setGlobalState] = useContext(AppContext);
+  
   const [state, setState] = useState({
-    fields:fields, 
+    fields: fields, 
     loading : false,
     errors: null,
     successMessage: false,
@@ -115,6 +118,14 @@ const SignIn = () => {
         if(res.ok) {
             // Parse json data 
             // Show success message
+
+            setGlobalState({...globalState, user: {
+              token: ret.token,
+              firstName: ret.firstName,
+              lastName: ret.lastName,
+            },
+            loginStatus: true,
+            })
             setState({ 
                 ...state, 
                 loading: false,

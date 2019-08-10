@@ -19,30 +19,48 @@ export const AppContext = createContext();
 const App = () => {
 
   const [state, setState] = useState({
-    user: {}
+    user: {
+      firstName: null,
+      lastName: null,
+      token: null,
+    },
+    loginStatus: localStorage.token ? true : false,
   });
 
   useEffect(()=>{
-    // If logged in
-    // localStorage.setItem('token', 'abcdef12345');
+    switch(state.loginStatus) {
+      case true:
+          // Put the JWT in the browser storage
+          localStorage.setItem('firstName', state.user.firstName);
+          localStorage.setItem('lastName', state.user.lastName);
+          localStorage.setItem('token', state.user.token);
+          break;
 
-    // Else if logged out
-    // localStorage.clear()
+      case false:
+          localStorage.clear();
+          break;
+          
+      default:
+      break;
+    }       
+    console.log(state, localStorage);
   })
 
   return (
-    <Router>
-        <Switch>
-            <Route path="/" exact component={Main}/>
-            <Route path="/signup" component={SignUp} />
-            <Route path="/sign-in" component={SignIn} />
-            <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/about" component={About} />
-            <Route path="/30-day-challenge" component={Challenge} />
-            <Route path="/terms-and-conditions" component={TermsConditions} />
-            <Route path="/profile" component={Profile} />
-        </Switch>
-    </Router>
+    <AppContext.Provider value={[state, setState]}>
+      <Router>
+          <Switch>
+              <Route path="/" exact component={Main}/>
+              <Route path="/signup" component={SignUp} />
+              <Route path="/sign-in" component={SignIn} />
+              <Route path="/forgot-password" component={ForgotPassword} />
+              <Route path="/about" component={About} />
+              <Route path="/30-day-challenge" component={Challenge} />
+              <Route path="/terms-and-conditions" component={TermsConditions} />
+              <Route path="/profile" component={Profile} />
+          </Switch>
+      </Router>
+    </AppContext.Provider>
   );
 }
 
