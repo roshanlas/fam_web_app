@@ -6,13 +6,14 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import MenuIcon from '@material-ui/icons/Menu';
-
+import colors from './colorTheme';
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
     position: 'fixed',
     bottom: '0px',
+    backgroundColor: colors.gray4
   },
   nav: {
     color: '#89092F'
