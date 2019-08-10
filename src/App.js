@@ -13,7 +13,6 @@ import Challenge from './Challenge';
 import TermsConditions from './TermsConditions';
 import Profile from './Profile';
 import './App.css';
-import Profile from './Profile';
 import ForgotPassword from './ForgotPassword';
 
 export const AppContext = createContext();
@@ -25,11 +24,19 @@ const App = () => {
   });
 
   useEffect(()=>{
-    // If logged in
-    // localStorage.setItem('token', 'abcdef12345');
-
-    // Else if logged out
-    // localStorage.clear()
+    switch(state.loginStatus) {
+      case true:
+          // Put the JWT in the browser storage
+          localStorage.setItem('firstName', state.firstName);
+          localStorage.setItem('lastName', state.lastName);
+          localStorage.setItem('token', state.token);
+        break;
+      case false:
+          localStorage.clear();
+        break;
+      default:
+        break;
+    }   
   })
 
   return (

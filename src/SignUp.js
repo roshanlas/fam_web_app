@@ -107,7 +107,7 @@ const SignUp = () => {
 
     setState({...state, loading: true})
 
-    submitData(formData)
+    submitData(formData, 'register')
     .then(async res => {
         let ret = await res.json();
         if(res.ok) {

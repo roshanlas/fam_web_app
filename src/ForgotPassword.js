@@ -98,7 +98,7 @@ const ForgotPassword = () => {
 
     setState({...state, loading: true})
 
-    submitData(formData)
+    submitData(formData, 'forgot-password')
     .then(async res => {
         let ret = await res.json();
         if(res.ok) {

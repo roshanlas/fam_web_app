@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useContext } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
@@ -10,8 +10,7 @@ import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './sign-in-utils';
-
-console.log('process', process.env.REACT_APP_API_URL)
+import { AppContext } from './App'; 
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -86,6 +85,8 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = () => {
 
+  const [globalState, globalSetState] = useContext(AppContext);
+
   const [state, setState] = useState({
     fields:fields, 
     loading : false,
@@ -109,7 +110,7 @@ const SignIn = () => {
 
     setState({...state, loading: true})
 
-    submitData(formData)
+    submitData(formData, 'login')
     .then(async res => {
         let ret = await res.json();
         if(res.ok) {
@@ -123,8 +124,15 @@ const SignIn = () => {
                 errorDescription: '',
                 successMessage: true,
                 toProfile: true,
-            })
+            });
 
+            globalSetState({
+              ...globalState,
+              loginStatus: true,
+              firstName: ret.firstName,
+              lastName: ret.lastName,
+              token: ret.token
+            });
         } else {
           console.log(res.status)
           // Handle the error
