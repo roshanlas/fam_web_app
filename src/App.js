@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import {  
     BrowserRouter as Router,
     Route,
@@ -7,15 +7,33 @@ import {
 import Main from './Main';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
+import Login from './Login';
 import About from './About';
 import Challenge from './Challenge';
 import TermsConditions from './TermsConditions';
+import Profile from './Profile';
 import './App.css';
 import Profile from './Profile';
 import ForgotPassword from './ForgotPassword';
 
-function App() {
+export const AppContext = createContext();
+
+const App = () => {
+
+  const [state, setState] = useState({
+    user: {}
+  });
+
+  useEffect(()=>{
+    // If logged in
+    // localStorage.setItem('token', 'abcdef12345');
+
+    // Else if logged out
+    // localStorage.clear()
+  })
+
   return (
+  <AppContext.Provider value={[state, setState]} >    
     <Router>
         <Switch>
             <Route path="/" exact component={Main}/>
@@ -28,6 +46,7 @@ function App() {
             <Route path="/profile" component={Profile} />
         </Switch>
     </Router>
+  </AppContext.Provider>    
   );
 }
 
