@@ -98,8 +98,8 @@ const Main = () => {
           </Link>
 
           {
-            false && 
-            <Link className={classes.signIn} component="button">
+            // false && 
+            <Link className={classes.signIn} component={RouterLink} to="/sign-in">
               Sign In
             </Link>
           }

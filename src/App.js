@@ -6,12 +6,15 @@ import {
 } from 'react-router-dom';
 import Main from './Main';
 import SignUp from './SignUp';
+import SignIn from './SignIn';
 import Login from './Login';
 import About from './About';
 import Challenge from './Challenge';
 import TermsConditions from './TermsConditions';
 import Profile from './Profile';
 import './App.css';
+import Profile from './Profile';
+import ForgotPassword from './ForgotPassword';
 
 export const AppContext = createContext();
 
@@ -30,19 +33,20 @@ const App = () => {
   })
 
   return (
-    <AppContext.Provider value={[state, setState]} >
-      <Router>
-          <Switch>
-              <Route path="/" exact component={Main}/>
-              <Route path="/signup" component={SignUp} />
-              <Route path="/login" component={Login} />
-              <Route path="/about" component={About} />
-              <Route path="/profile" component={Profile} />
-              <Route path="/30-day-challenge" component={Challenge} />
-              <Route path="/terms-and-conditions" component={TermsConditions} />
-          </Switch>
-      </Router>
-    </AppContext.Provider>
+  <AppContext.Provider value={[state, setState]} >    
+    <Router>
+        <Switch>
+            <Route path="/" exact component={Main}/>
+            <Route path="/signup" component={SignUp} />
+            <Route path="/sign-in" component={SignIn} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/about" component={About} />
+            <Route path="/30-day-challenge" component={Challenge} />
+            <Route path="/terms-and-conditions" component={TermsConditions} />
+            <Route path="/profile" component={Profile} />
+        </Switch>
+    </Router>
+  </AppContext.Provider>    
   );
 }
 
