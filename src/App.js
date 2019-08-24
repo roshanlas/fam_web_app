@@ -12,8 +12,9 @@ import About from './About';
 import Challenge from './Challenge';
 import TermsConditions from './TermsConditions';
 import Profile from './Profile';
-import './App.css';
 import ForgotPassword from './ForgotPassword';
+import Questionnaire from './Questionnaire';
+import './App.css';
 
 export const AppContext = createContext();
 
@@ -51,6 +52,7 @@ const App = () => {
             <Route path="/30-day-challenge" component={Challenge} />
             <Route path="/terms-and-conditions" component={TermsConditions} />
             <Route path="/profile" component={Profile} />
+            <Route path="/questionnaire" component={Questionnaire} />
         </Switch>
     </Router>
   </AppContext.Provider>    

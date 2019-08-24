@@ -29,7 +29,7 @@ const About = () => {
       <div className={classes.header}>
           <BackButton to="/" />
           <Logo />
-        </div>
+      </div>
       <Container maxWidth="xs">
         <h1>About Female and More</h1>
         <p>
