@@ -178,7 +178,7 @@ const SignIn = (props) => {
   console.log('verified', verified);
 
   if (state.toProfile === true) {
-    return <Redirect to='/profile' />
+    return <Redirect to='/about?information=true' />
   }
 
   return (
