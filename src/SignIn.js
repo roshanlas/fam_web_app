@@ -11,6 +11,7 @@ import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './sign-in-utils';
 import { AppContext } from './App'; 
+const queryString = require('query-string');
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -80,10 +81,24 @@ const useStyles = makeStyles(theme => ({
   forgotPassLink: {
     fontSize: '18px',
     color: colors.y1,
+  },
+  verified: {
+    width: '100%',
+    padding: '8px 12px',
+    background: '#11eac5',
+    textAlign: 'center',
+    borderRadius: '5px'
+  },
+  notVerified: {
+    width: '100%',
+    padding: '8px 12px',
+    background: '#fb5252',
+    textAlign: 'center',
+    borderRadius: '5px'
   }
 }));
 
-const SignIn = () => {
+const SignIn = (props) => {
 
   const [globalState, globalSetState] = useContext(AppContext);
 
@@ -97,6 +112,7 @@ const SignIn = () => {
     toProfile: false
   });
   const classes = useStyles();
+  const verified = queryString.parse(props.location.search).verified;
 
   const doSignIn = () => {
 
@@ -159,6 +175,8 @@ const SignIn = () => {
     })
   }
 
+  console.log('verified', verified);
+
   if (state.toProfile === true) {
     return <Redirect to='/profile' />
   }
@@ -171,6 +189,15 @@ const SignIn = () => {
           <Logo />
         </div>
       <Container maxWidth="xs">
+
+        {
+          verified === "true" && 
+          <p className={classes.verified}>Your account has been successfully verified!</p>
+        }
+        {
+          verified === "false" && 
+          <p className={classes.notVerified}>Your account has not been verified yet</p>
+        }
         <h1>Welcome back!</h1>
 
         {Object.keys(fields).map(
