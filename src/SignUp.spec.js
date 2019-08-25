@@ -60,6 +60,7 @@ describe('render', ()=> {
                 marriageStatus: '', 
                 occupation: '', 
                 residence: '', 
+                country: '',
                 city: '', 
                 homeAddress: '', 
                 postCode: ''
