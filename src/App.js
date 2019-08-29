@@ -11,8 +11,9 @@ import About from './About';
 import Challenge from './Challenge';
 import TermsConditions from './TermsConditions';
 import Profile from './Profile';
-import './App.css';
 import ForgotPassword from './ForgotPassword';
+import Questionnaire from './Questionnaire';
+import './App.css';
 
 export const AppContext = createContext();
 
@@ -31,36 +32,34 @@ const App = () => {
     switch(state.loginStatus) {
       case true:
           // Put the JWT in the browser storage
-          localStorage.setItem('firstName', state.user.firstName);
-          localStorage.setItem('lastName', state.user.lastName);
-          localStorage.setItem('token', state.user.token);
-          break;
-
+          localStorage.setItem('firstName', state.firstName);
+          localStorage.setItem('lastName', state.lastName);
+          localStorage.setItem('token', state.token);
+        break;
       case false:
           localStorage.clear();
-          break;
-          
+        break;
       default:
-      break;
-    }       
-    console.log(state, localStorage);
+        break;
+    }   
   })
 
   return (
-    <AppContext.Provider value={[state, setState]}>
-      <Router>
-          <Switch>
-              <Route path="/" exact component={Main}/>
-              <Route path="/signup" component={SignUp} />
-              <Route path="/sign-in" component={SignIn} />
-              <Route path="/forgot-password" component={ForgotPassword} />
-              <Route path="/about" component={About} />
-              <Route path="/30-day-challenge" component={Challenge} />
-              <Route path="/terms-and-conditions" component={TermsConditions} />
-              <Route path="/profile" component={Profile} />
-          </Switch>
-      </Router>
-    </AppContext.Provider>
+  <AppContext.Provider value={[state, setState]} >    
+    <Router>
+        <Switch>
+            <Route path="/" exact component={Main}/>
+            <Route path="/signup" component={SignUp} />
+            <Route path="/sign-in" component={SignIn} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/about" component={About} />
+            <Route path="/30-day-challenge" component={Challenge} />
+            <Route path="/terms-and-conditions" component={TermsConditions} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/questionnaire" component={Questionnaire} />
+        </Switch>
+    </Router>
+  </AppContext.Provider>    
   );
 }
 

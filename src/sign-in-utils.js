@@ -41,9 +41,10 @@ export const validateFields = (formData) => {
  * Performs fetch request and invokes callback
  * @param {*} formData
  */
-export const submitData = async (formData) => {
+export const submitData = async (formData, service) => {
     return await fetch(
-        `${process.env.REACT_APP_API_URL}/login`,
+        // TODO Update URL
+        `${process.env.REACT_APP_API_URL}/${service}`, 
         // Data
         {
             method: 'POST',

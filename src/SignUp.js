@@ -9,8 +9,7 @@ import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './registration-utils';
-
-console.log('process', process.env.REACT_APP_API_URL)
+import countriesList from './countries-list';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -35,6 +34,13 @@ const useStyles = makeStyles(theme => ({
     '&:focus': {
       outline: 'none'
     }
+  },
+  dropdown: {
+    fontSize: '1.4rem',
+    background: 'none',
+    width: '100%',
+    outline: 'none',
+    border: 'none'
   },
   error: {
     borderColor: 'red'
@@ -80,7 +86,15 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     fontSize: '1.6rem',
     fontWeight: 'bold'
-  }
+  },
+  success: {
+    width: '100%',
+    fontSize: '1.4rem',
+    padding: '8px 12px',
+    background: '#11eac5',
+    textAlign: 'center',
+    borderRadius: '5px'
+  },
 }));
 
 const SignUp = () => {
@@ -107,7 +121,7 @@ const SignUp = () => {
 
     setState({...state, loading: true})
 
-    submitData(formData)
+    submitData(formData, 'register')
     .then(async res => {
         let ret = await res.json();
         if(res.ok) {
@@ -165,14 +179,33 @@ const SignUp = () => {
                 error = state.errors[field] ? classes.error : '';
               }
               let required = fields[field].required ? 'required' : '';
-              return (
-                <input type="text"
-                  key={field}
-                  ref={comp=>fields[field].comp = comp}
-                  className={`${field} ${classes.inputField} ${error} ${required}`}
-                  placeholder={fields[field].label}
-                />
-              )
+
+              if(field === "country") {
+                return (
+                  <div className={`${field} ${classes.inputField} ${error} ${required}`}>
+                    <select
+                      key={field}
+                      className={classes.dropdown}
+                      ref={comp=>fields[field].comp = comp}
+                      placeholder={fields[field].label}
+                    >
+                      <option>Select Country</option>
+                      {countriesList.map(
+                        country=><option value={country.name}>{country.name}</option>
+                      )}
+                    </select>
+                  </div>
+                )
+              } else {
+                return (
+                  <input type="text"
+                    key={field}
+                    ref={comp=>fields[field].comp = comp}
+                    className={`${field} ${classes.inputField} ${error} ${required}`}
+                    placeholder={fields[field].label}
+                  />
+                )
+              }
             }
         )}
 
@@ -194,7 +227,7 @@ const SignUp = () => {
         { 
           state.successMessage && 
             <div>
-              <p>
+              <p className={classes.success}>
               You have been registered successfully! You will be receiving an email
               from us shortly.
               </p>

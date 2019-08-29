@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
@@ -10,9 +10,8 @@ import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './sign-in-utils';
-import { AppContext } from './App';
-
-console.log('process', process.env.REACT_APP_API_URL)
+import { AppContext } from './App'; 
+const queryString = require('query-string');
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -82,10 +81,26 @@ const useStyles = makeStyles(theme => ({
   forgotPassLink: {
     fontSize: '18px',
     color: colors.y1,
+  },
+  verified: {
+    width: '100%',
+    padding: '8px 12px',
+    background: '#11eac5',
+    textAlign: 'center',
+    borderRadius: '5px'
+  },
+  notVerified: {
+    width: '100%',
+    padding: '8px 12px',
+    background: '#fb5252',
+    textAlign: 'center',
+    borderRadius: '5px'
   }
 }));
 
-const SignIn = () => {
+const SignIn = (props) => {
+
+  const [globalState, globalSetState] = useContext(AppContext);
 
   const [globalState, setGlobalState] = useContext(AppContext);
   
@@ -99,6 +114,7 @@ const SignIn = () => {
     toProfile: false
   });
   const classes = useStyles();
+  const verified = queryString.parse(props.location.search).verified;
 
   const doSignIn = () => {
 
@@ -112,7 +128,7 @@ const SignIn = () => {
 
     setState({...state, loading: true})
 
-    submitData(formData)
+    submitData(formData, 'login')
     .then(async res => {
         let ret = await res.json();
         if(res.ok) {
@@ -134,8 +150,15 @@ const SignIn = () => {
                 errorDescription: '',
                 successMessage: true,
                 toProfile: true,
-            })
+            });
 
+            globalSetState({
+              ...globalState,
+              loginStatus: true,
+              firstName: ret.firstName,
+              lastName: ret.lastName,
+              token: ret.token
+            });
         } else {
           console.log(res.status)
           // Handle the error
@@ -162,8 +185,10 @@ const SignIn = () => {
     })
   }
 
+  console.log('verified', verified);
+
   if (state.toProfile === true) {
-    return <Redirect to='/profile' />
+    return <Redirect to='/about?information=true' />
   }
 
   return (
@@ -174,6 +199,15 @@ const SignIn = () => {
           <Logo />
         </div>
       <Container maxWidth="xs">
+
+        {
+          verified === "true" && 
+          <p className={classes.verified}>Your account has been successfully verified!</p>
+        }
+        {
+          verified === "false" && 
+          <p className={classes.notVerified}>Your account has not been verified yet</p>
+        }
         <h1>Welcome back!</h1>
 
         {Object.keys(fields).map(

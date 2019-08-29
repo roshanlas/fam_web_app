@@ -8,7 +8,8 @@ export const fields = {
     gender: {comp: null, error: false, label: 'Gender', required: true}, 
     marriageStatus: {comp: null, error: false, label: 'Marriage Status', required: false}, 
     occupation: {comp: null, error: false, label: 'Occupation', required: false}, 
-    residence: {comp: null, error: false, label: 'Residence', required: false}, 
+    residence: {comp: null, error: false, label: 'Residence', required: false},
+    country: {comp: null, error: false, label: 'Country', required: true}, 
     city: {comp: null, error: false, label: 'City', required: true},
     homeAddress: {comp: null, error: false, label: 'Home Address', required: false}, 
     postCode: {comp: null, error: false, label: 'Post Code', required: false}
@@ -62,6 +63,9 @@ export const validateFields = (formData) => {
     if(formData['city'].length === 0) {
         Object.assign(errors, {'city':'Please enter your city'})
     }
+    if(formData['country'].length === 0) {
+        Object.assign(errors, {'country':'Please select your country'})
+    }
     return errors;
 }
 
@@ -69,10 +73,10 @@ export const validateFields = (formData) => {
  * Performs fetch request and invokes callback
  * @param {*} formData
  */
-export const submitData = async (formData) => {
+export const submitData = async (formData, service) => {
     return await fetch(
         // URL
-        `${process.env.REACT_APP_API_URL}/register`, 
+        `${process.env.REACT_APP_API_URL}/${service}`, 
         // Data
         {
             method: 'POST',
