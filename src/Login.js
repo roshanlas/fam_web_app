@@ -8,8 +8,6 @@ import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 
-console.log('process', process.env.REACT_APP_API_URL)
-
 const useStyles = makeStyles(theme => ({
   main: {
     backgroundColor: colors.p3,
@@ -96,8 +94,6 @@ const Login = () => {
     errorDescription: ''
   });
   const classes = useStyles();
-
-
   const doLogin = () => {
       setGlobalState({...globalState, user: {
           name: 'Dany'

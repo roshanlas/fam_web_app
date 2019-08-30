@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = (props) => {
 
-  const [globalState, globalSetState] = useContext(AppContext);
+  const [globalState, setGlobalState] = useContext(AppContext);
 
   const [state, setState] = useState({
     fields:fields, 
@@ -142,7 +142,7 @@ const SignIn = (props) => {
                 toProfile: true,
             });
 
-            globalSetState({
+            setGlobalState({
               ...globalState,
               loginStatus: true,
               firstName: ret.firstName,
@@ -178,7 +178,7 @@ const SignIn = (props) => {
   console.log('verified', verified);
 
   if (state.toProfile === true) {
-    return <Redirect to='/about?information=true' />
+    return <Redirect to='/profile' />
   }
 
   return (

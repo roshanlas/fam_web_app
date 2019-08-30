@@ -14,6 +14,7 @@ import TermsConditions from './TermsConditions';
 import Profile from './Profile';
 import ForgotPassword from './ForgotPassword';
 import Questionnaire from './Questionnaire';
+import Story from './Story';
 import './App.css';
 
 export const AppContext = createContext();
@@ -53,6 +54,7 @@ const App = () => {
             <Route path="/terms-and-conditions" component={TermsConditions} />
             <Route path="/profile" component={Profile} />
             <Route path="/questionnaire" component={Questionnaire} />
+            <Route path="/story" component={Story} />
         </Switch>
     </Router>
   </AppContext.Provider>    
