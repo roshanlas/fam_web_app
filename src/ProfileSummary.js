@@ -135,8 +135,7 @@ const DailyProgress = (prop) => {
 export default function ProfileSummary(prop) {
   const classes = useStyles();
   const [globalState] = useContext(AppContext);
-  console.log({...globalState});
-
+  
   return (
     <div>
       <Paper square className={classes.root}>

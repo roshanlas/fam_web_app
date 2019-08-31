@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Logo from './Logo';
 import { BackButton } from './Heading';
 import { Link as RouterLink } from 'react-router-dom';
-import { submitData } from './registration-utils';
+import { submitData, getData } from './registration-utils';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import DoneIcon from '@material-ui/icons/Done';
@@ -118,20 +118,50 @@ const useStyles = makeStyles({
     }
 });
 
-const Questionnaire = () => {
+const Questionnaire = (props) => {
     const classes = useStyles();
-    const [ globalState ] = useContext(AppContext);
+    const [ globalState, setGlobalState ] = useContext(AppContext);
     const [ state, setState ] = useState({ 
         draftSaved: false, 
         loading: false,
         error: false,
         prompt: 'hidden',
-        submit: '' 
+        submit: '',
+        answersLoading: true
     });
-    const questions = globalState.questions? globalState.questions : [];
-    let count = 0;
+    let questions = globalState.questions? globalState.questions : [];
+    let count =0;
     let fields = [];
     let answers;
+
+    const getStudentSubmission = () => {
+        getData(
+            `submission/retrieve/${globalState.storyID}`, 
+            'GET'
+        )
+        .then(async res => {
+            let ret = await res.json();
+            console.log('ret')
+            if(res.ok) {
+                setGlobalState({
+                    ...globalState,
+                    submission: ret.submission === null ? [] : ret.submission
+                });
+            } else {
+                setGlobalState({
+                    ...globalState,
+                    submission: false
+                })
+            }
+        })
+        .catch(err => {
+            console.log('err', err)
+            setGlobalState({
+                ...globalState,
+                submission: false
+            })
+        });
+    };
 
     /**
      * saveDraft
@@ -148,7 +178,11 @@ const Questionnaire = () => {
             { return {answer: field.value} }
         );
 
-        submitData({submission: answers, final: false}, 'submit')
+        submitData({
+            submission: answers, 
+            storyID: globalState.storyID,
+            final: false
+        }, 'submission/submit')
         .then(async res=>{
             let ret = Promise.resolve(res.json());
             if(res.ok) {
@@ -213,8 +247,10 @@ const Questionnaire = () => {
         );
 
         submitData({
-            submission: answers, final: true
-        }, 'submit')
+            submission: answers, 
+            final: true,
+            storyID: globalState.storyID,
+        }, 'submission/submit')
         .then(async res=>{
             let ret = Promise.resolve(res.json());
             if(res.ok) {
@@ -246,6 +282,20 @@ const Questionnaire = () => {
         })
     };
 
+
+    useEffect(()=>{
+        
+        if(globalState.submission === undefined) {
+            getStudentSubmission();
+        }
+    
+        if(questions.length === 0) {
+            props.history.push(`/profile`)
+        }
+        count = 0;
+    });
+
+
     return(
         <div className={`${classes.questionnaire}`}>
             <CssBaseline />
@@ -260,17 +310,22 @@ const Questionnaire = () => {
                 </div>
                 <h2 className={classes.heading}>Dr. Stella</h2>
                 
-                {questions.map(question=>{
-                    count++;
-                    return(<div key={count}>
-                        <h2>{`Question ${count}:`}</h2>
-                        <p>{question.title}</p>
-                        <textarea 
-                        ref={comp=>fields.push(comp)}
-                        className={classes.textbox} />
-                    </div>)
+                {globalState.submission && questions.map(question=>{
+                        var e = <div key={count}>
+                                <h2>{`Question ${count}:`}</h2>
+                                <p>{question.title}</p>
+                                <textarea 
+                                ref={comp=>fields.push(comp)}
+                                className={classes.textbox} 
+                                defaultValue={
+                                    globalState.submission.length > 0 ? 
+                                        globalState.submission[count].answer : ''
+                                }/>
+                            </div>
+                        count++; return e;
                     }
-                )}   
+                )} 
+
                 
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     { !state.loading && 

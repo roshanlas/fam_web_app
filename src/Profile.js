@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from './BottomNavigation';
 import ProfileSummary from './ProfileSummary';
@@ -62,7 +62,6 @@ export const submitData = async (formData, service) => {
 const Profile = () => {
 
   const classes = useStyles();
-  const [state, setState] = useState({});
   const [globalState, setGlobalState] = useContext(AppContext);
 
   const getStoryOfDay = () => {
@@ -70,9 +69,11 @@ const Profile = () => {
     .then( async res => {
       let ret = await res.json();
       if(res.ok) {
+
         setGlobalState({
           ...globalState, 
           currentDay: ret.currentDay,
+          storyID: ret.story.storyID,
           person: ret.story.person,
           occupation: ret.story.occupation,
           title: ret.story.title,
@@ -83,9 +84,11 @@ const Profile = () => {
     });
   };
 
-  if(!globalState.currentDay) {
-    getStoryOfDay();
-  }
+  useEffect(()=>{
+    if(!globalState.currentDay) {
+      getStoryOfDay();
+    }
+  }, []);
   
   return (
     <div className={classes.profile}>
