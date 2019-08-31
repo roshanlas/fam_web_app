@@ -32,7 +32,7 @@ const Story = () => {
           <BackButton to="/profile" />
           <Logo />
         </div>
-      <Container maxWidth="xs">
+      <Container maxWidth="sm">
         <h1>{globalState.title}</h1>
         <p>{globalState.description}</p>
       </Container>

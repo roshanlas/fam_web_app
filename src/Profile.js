@@ -63,6 +63,7 @@ const Profile = () => {
 
   const classes = useStyles();
   const [globalState, setGlobalState] = useContext(AppContext);
+  let excerpt;
 
   const getStoryOfDay = () => {
     submitData({}, 'story-of-day')
@@ -73,6 +74,7 @@ const Profile = () => {
         setGlobalState({
           ...globalState, 
           currentDay: ret.currentDay,
+          dayOfMonth: ret.dayOfMonth,
           storyID: ret.story.storyID,
           person: ret.story.person,
           occupation: ret.story.occupation,
@@ -84,6 +86,8 @@ const Profile = () => {
     });
   };
 
+ 
+
   useEffect(()=>{
     if(!globalState.currentDay) {
       getStoryOfDay();
@@ -94,7 +98,7 @@ const Profile = () => {
     <div className={classes.profile}>
         <ProfileSummary 
           story={globalState.story}
-          src="https://unlockwomenspower.files.wordpress.com/2012/06/ratidzo-mambo-head-shot-1.jpg?w=390&h=586&zoom=2" />
+          src="./images/profile.jpg" />
 
         <div className={classes.infoGroup}>
           <InfoCard to="/questionnaire"
@@ -110,7 +114,9 @@ const Profile = () => {
               <h4>{globalState.occupation}</h4>
             </div>
             <h2>{globalState.person} -  {globalState.title}</h2>
-            <p>{globalState.description}</p>
+            <p style={{width: 'calc(100% - 5rem)'}}>{
+              globalState.description ? globalState.description.slice(0,600).concat('...') : ''
+            }</p>
           </InfoCard>
         </div>
         <BottomNavigation />

@@ -24,7 +24,17 @@ const useStyles = makeStyles({
   open: {
       width: '100%'
   },
-  logout: {},
+  logout: {
+    display: 'block',
+    color: '#868383',
+    fontSize: '1.4em',
+    borderBottom: 'solid 1px #868383',
+    width: '100%',
+    padding: '1em 0',
+    '&:hover': {
+      textDecoration: 'none'
+    }
+  },
   backButton: {
       top: '1.5rem',
       left: '1.5rem',
@@ -51,7 +61,7 @@ const Sidebar = (prop) => {
             </Button>
             <Logo />
         </div>
-        <Container maxWidth="xs">
+        <Container>
             <h1>Settings</h1>
             <Link 
             className={classes.logout} 

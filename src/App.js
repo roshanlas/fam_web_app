@@ -4,6 +4,7 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
+import { PrivateRoute } from './PrivateRoute';
 import Main from './Main';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
@@ -52,9 +53,9 @@ const App = () => {
             <Route path="/about" component={About} />
             <Route path="/30-day-challenge" component={Challenge} />
             <Route path="/terms-and-conditions" component={TermsConditions} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/questionnaire" component={Questionnaire} />
-            <Route path="/story" component={Story} />
+            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/questionnaire" component={Questionnaire} />
+            <PrivateRoute path="/story" component={Story} />
         </Switch>
     </Router>
   </AppContext.Provider>    

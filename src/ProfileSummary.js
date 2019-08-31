@@ -65,13 +65,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const week = [
-  {dayNum: 1, dayWeek: 'Mon'},
-  {dayNum: 2, dayWeek: 'Tue'},
-  {dayNum: 3, dayWeek: 'Wed'},
-  {dayNum: 4, dayWeek: 'Thu'},
-  {dayNum: 5, dayWeek: 'Fri'},
-  {dayNum: 6, dayWeek: 'Sat'},
-  {dayNum: 7, dayWeek: 'Sun'},
+  {dayNum: 26, dayWeek: 'Mon'},
+  {dayNum: 27, dayWeek: 'Tue'},
+  {dayNum: 28, dayWeek: 'Wed'},
+  {dayNum: 29, dayWeek: 'Thu'},
+  {dayNum: 30, dayWeek: 'Fri'},
+  {dayNum: 31, dayWeek: 'Sat'},
+  {dayNum: 1, dayWeek: 'Sun'},
 ]
 
 const DayItem = (prop) => {
@@ -106,7 +106,7 @@ const DailyProgress = (prop) => {
   const [globalState] = useContext(AppContext);
 
   const getDayStatus = (a, b) => {
-    if(parseInt(a) > b) {
+    if(parseInt(a) > b && b!==1) {
       return 'done';
     } else if (parseInt(a) === b) {
       return 'pending';
@@ -115,7 +115,9 @@ const DailyProgress = (prop) => {
 
   return (
     <div className={classes.dailyProgress}>
-      <h4 style={{textAlign: 'left'}}>{prop.challengeName}</h4>
+      <h4 style={{textAlign: 'left', margin: '2em auto'}}>{
+        `Story of The Day: ${prop.challengeName}`
+      }</h4>
       <div className={classes.calendar}>
         {week.map(
           dayItem=><DayItem 
@@ -123,7 +125,7 @@ const DailyProgress = (prop) => {
             dayWeek={dayItem.dayWeek} 
             dayNum={dayItem.dayNum} 
             status={
-              getDayStatus(globalState.currentDay, dayItem.dayNum)
+              getDayStatus(globalState.dayOfMonth, dayItem.dayNum)
             }  
           />)}
       </div>
