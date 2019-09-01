@@ -4,13 +4,21 @@ import {
 } from 'react-router';
 import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { submitData } from './registration-utils';
+import { submitData, getData } from './registration-utils';
 import { AppContext } from './App'
 import Questionnaire from './Questionnaire';
 import { act } from 'react-dom/test-utils';
 
 jest.mock('./registration-utils', () => ({
     submitData: jest.fn().mockImplementation(
+        () => Promise.resolve(
+            {
+                ok: true, 
+                json: jest.fn().mockResolvedValue(true)
+            }
+        )
+    ),
+    getData: jest.fn().mockImplementation(
         () => Promise.resolve(
             {
                 ok: true, 
@@ -29,21 +37,21 @@ describe('render', ()=> {
     // const setState = jest.fn();
     // const useStateSpy = jest.spyOn(registrationUtils, 'submitData')
     // useStateSpy.mockImplementation((init) => {ok: true} );
+    const props = {
+        history: {
+            push: jest.fn()
+        }
+    }
 
 
     beforeEach(()=>{
         wrapper0 = mount(
             <AppContext.Provider value={[{}, ()=>{}]}>
                 <MemoryRouter>
-                    <Questionnaire/>
+                    <Questionnaire {...props}/>
                 </MemoryRouter>
             </AppContext.Provider>
         );
-        // wrapper = shallow(
-        //     <AppContext.Provider value={[{}, ()=>{}]}>
-        //         <Questionnaire/>
-        //     </AppContext.Provider>
-        // );
     });
 
     afterEach(() => {

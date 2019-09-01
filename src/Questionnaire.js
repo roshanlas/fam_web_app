@@ -141,7 +141,6 @@ const Questionnaire = (props) => {
         )
         .then(async res => {
             let ret = await res.json();
-            console.log('ret')
             if(res.ok) {
                 setGlobalState({
                     ...globalState,
