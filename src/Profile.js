@@ -115,7 +115,7 @@ const Profile = () => {
             </div>
             <h2>{globalState.person} -  {globalState.title}</h2>
             <p style={{width: 'calc(100% - 5rem)'}}>{
-              globalState.description ? globalState.description.slice(0,600).concat('...') : ''
+              globalState.description ? globalState.description.slice(0,100).concat('...') : ''
             }</p>
           </InfoCard>
         </div>

@@ -98,7 +98,7 @@ const useStyles = makeStyles({
     },
     open: {
         display: 'block',
-        position: 'absolute',
+        position: 'fixed',
         top: '0px',
         left: '0px',
         width: '100%',
@@ -107,6 +107,7 @@ const useStyles = makeStyles({
     },
     promptBox: {
         maxWidth: '30em',
+        width: 'calc(100% - 2em)',
         padding: '2em',
         position: 'absolute',
         color: 'black',
@@ -326,7 +327,7 @@ const Questionnaire = (props) => {
                 )} 
 
                 
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2em' }}>
                     { !state.loading && 
                         <Button 
                             onClick={saveDraft}
