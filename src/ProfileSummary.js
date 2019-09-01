@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   dailyProgress: {
     margin: '1rem 0 0 0',
+    padding: '0 2em',
     textAlign: 'center'
   },
   calendar: {
@@ -63,16 +64,6 @@ const useStyles = makeStyles(theme => ({
     color: colors.pink2
   }
 }));
-
-const week = [
-  {dayNum: 26, dayWeek: 'Mon'},
-  {dayNum: 27, dayWeek: 'Tue'},
-  {dayNum: 28, dayWeek: 'Wed'},
-  {dayNum: 29, dayWeek: 'Thu'},
-  {dayNum: 30, dayWeek: 'Fri'},
-  {dayNum: 31, dayWeek: 'Sat'},
-  {dayNum: 1, dayWeek: 'Sun'},
-]
 
 const DayItem = (prop) => {
   const classes = useStyles();
@@ -101,17 +92,25 @@ const DayItem = (prop) => {
   )
 }
 
+
+const updateDayStatus = (dayOfMonth, array) => {
+    const index = array.findIndex((elem)=>elem.dayNum===dayOfMonth);
+
+    const newArray = array.map((item,i)=>{ 
+      return {
+        dayNum: item.dayNum,
+        dayWeek: item.dayWeek,
+        dayStatus: i <= index? 'done' : ''
+      }
+    });
+
+    newArray[index].dayStatus = 'pending';
+    return newArray;
+}
+
 const DailyProgress = (prop) => {
   const classes = useStyles();
-  const [globalState] = useContext(AppContext);
-
-  const getDayStatus = (a, b) => {
-    if(parseInt(a) > b && b!==1) {
-      return 'done';
-    } else if (parseInt(a) === b) {
-      return 'pending';
-    }
-  }
+  const calendar = updateDayStatus(prop.dayOfMonth, prop.calendar)
 
   return (
     <div className={classes.dailyProgress}>
@@ -119,14 +118,12 @@ const DailyProgress = (prop) => {
         `Story of The Day: ${prop.challengeName}`
       }</h4>
       <div className={classes.calendar}>
-        {week.map(
+        {calendar.map(
           dayItem=><DayItem 
             key={dayItem.dayNum}
             dayWeek={dayItem.dayWeek} 
             dayNum={dayItem.dayNum} 
-            status={
-              getDayStatus(globalState.dayOfMonth, dayItem.dayNum)
-            }  
+            status={dayItem.dayStatus}  
           />)}
       </div>
       
@@ -153,8 +150,10 @@ export default function ProfileSummary(prop) {
             <p className={classes.text3}>
               In 10 years I want to be a sucessful lawyer
             </p>
-            <DailyProgress 
-            challengeName={globalState.title}/>
+            { globalState.calendar && <DailyProgress 
+            calendar={globalState.calendar}
+            dayOfMonth={globalState.dayOfMonth}
+            challengeName={globalState.title}/> }
           </div>
         </div>
       </Paper>

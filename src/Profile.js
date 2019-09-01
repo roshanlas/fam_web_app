@@ -63,7 +63,6 @@ const Profile = () => {
 
   const classes = useStyles();
   const [globalState, setGlobalState] = useContext(AppContext);
-  let excerpt;
 
   const getStoryOfDay = () => {
     submitData({}, 'story-of-day')
@@ -73,6 +72,7 @@ const Profile = () => {
 
         setGlobalState({
           ...globalState, 
+          calendar: ret.calendar,
           currentDay: ret.currentDay,
           dayOfMonth: ret.dayOfMonth,
           storyID: ret.story.storyID,
@@ -104,13 +104,13 @@ const Profile = () => {
           <InfoCard to="/questionnaire"
           className={classes.infoCard}
           style={{backgroundColor: colors.pink2}}>
-            <h2>Day {globalState.currentDay} - Answers Pending</h2>
+            <h2>Day {globalState.dayOfMonth} - Answers Pending</h2>
           </InfoCard>
           <InfoCard to="/story"
           className={classes.infoCard}
           style={{backgroundColor: colors.g2}}>
             <div className={classes.infoSubHead}>
-              <h4>Day {globalState.currentDay} Story of the Day</h4>
+              <h4>Day {globalState.dayOfMonth} Story of the Day</h4>
               <h4>{globalState.occupation}</h4>
             </div>
             <h2>{globalState.person} -  {globalState.title}</h2>

@@ -305,7 +305,7 @@ const Questionnaire = (props) => {
             </div>
             <Container maxWidth="xs">
                 <div className={classes.infoSubHead}>
-                    <h3>Day {globalState.currentDay} Story of the Day</h3>
+                    <h3>Day {globalState.dayOfMonth} Story of the Day</h3>
                     <h3>{globalState.occupation}</h3>
                 </div>
                 <h2 className={classes.heading}>{globalState.person}</h2>
