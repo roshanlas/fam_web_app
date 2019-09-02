@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Logo from './Logo';
@@ -76,8 +76,16 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const Main = () => {
+const Main = (props) => {
   const classes = useStyles();
+
+  useEffect(()=>{
+    if (localStorage.getItem('token')) {
+      props.history.push('/profile')
+    }
+  });
+
+
   return (
     <div className={classes.main}>
       <CssBaseline />

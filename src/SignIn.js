@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
@@ -175,11 +175,11 @@ const SignIn = (props) => {
     })
   }
 
-  console.log('verified', verified);
-
-  if (state.toProfile === true) {
-    return <Redirect to='/profile' />
-  }
+  useEffect(()=>{
+    if (state.toProfile === true || localStorage.getItem('token')) {
+      props.history.push('/profile')
+    }
+  });
 
   return (
     <div className={`SignIn ${classes.main}`}>
