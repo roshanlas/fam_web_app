@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import colors from './colorTheme';
@@ -6,8 +6,7 @@ import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DoneIcon from '@material-ui/icons/Done';
 import StudyAvatar from './StudyAvatar';
-import { relative } from 'path';
-
+import { AppContext } from './App';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,6 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   dailyProgress: {
     margin: '1rem 0 0 0',
+    padding: '0 2em',
     textAlign: 'center'
   },
   calendar: {
@@ -65,24 +65,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const week = [
-  {dayNum: 30, dayWeek: 'Mon'},
-  {dayNum: 1, dayWeek: 'Sun'},
-  {dayNum: 2, dayWeek: 'Tue'},
-  {dayNum: 3, dayWeek: 'Wed'},
-  {dayNum: 4, dayWeek: 'Thu'},
-  {dayNum: 5, dayWeek: 'Fri'},
-  {dayNum: 6, dayWeek: 'Sat'}
-
-]
-
 const DayItem = (prop) => {
   const classes = useStyles();
   let icon;
 
 
   switch(prop.status){
-    case 'done':
+      case 'done':
         icon = <DoneIcon className={classes.calendarIcon}/>
       break;
     case 'pending':
@@ -103,17 +92,38 @@ const DayItem = (prop) => {
   )
 }
 
+
+const updateDayStatus = (dayOfMonth, array) => {
+    const index = array.findIndex((elem)=>elem.dayNum===dayOfMonth);
+
+    const newArray = array.map((item,i)=>{ 
+      return {
+        dayNum: item.dayNum,
+        dayWeek: item.dayWeek,
+        dayStatus: i <= index? 'done' : ''
+      }
+    });
+
+    newArray[index].dayStatus = 'pending';
+    return newArray;
+}
+
 const DailyProgress = (prop) => {
   const classes = useStyles();
+  const calendar = updateDayStatus(prop.dayOfMonth, prop.calendar)
+
   return (
     <div className={classes.dailyProgress}>
-      <h4 style={{textAlign: 'left'}}>{prop.challengeName}</h4>
+      <h4 style={{textAlign: 'left', margin: '2em auto'}}>{
+        `Story of The Day: ${prop.challengeName}`
+      }</h4>
       <div className={classes.calendar}>
-        {week.map(
+        {calendar.map(
           dayItem=><DayItem 
+            key={dayItem.dayNum}
             dayWeek={dayItem.dayWeek} 
             dayNum={dayItem.dayNum} 
-            status={dayItem.status}  
+            status={dayItem.dayStatus}  
           />)}
       </div>
       
@@ -123,22 +133,27 @@ const DailyProgress = (prop) => {
 
 export default function ProfileSummary(prop) {
   const classes = useStyles();
-
+  const [globalState] = useContext(AppContext);
+  
   return (
     <div>
       <Paper square className={classes.root}>
         <div className={classes.media}>
           <StudyAvatar src={prop.src}/>
           <div className={classes.txtContainer}>
-            <p className={classes.text2}>Amara</p>
+            <p className={classes.text2}>
+              {`${localStorage.firstName} ${localStorage.lastName}`}
+            </p>
             <p className={classes.text3}>
               <CardGiftcardIcon className={classes.icon}/> 37 Points
             </p>
             <p className={classes.text3}>
               In 10 years I want to be a sucessful lawyer
             </p>
-            <DailyProgress 
-            challengeName={"30 Days Challenge"}/>
+            { globalState.calendar && <DailyProgress 
+            calendar={globalState.calendar}
+            dayOfMonth={globalState.dayOfMonth}
+            challengeName={globalState.title}/> }
           </div>
         </div>
       </Paper>

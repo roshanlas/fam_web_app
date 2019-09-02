@@ -11,8 +11,6 @@ import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './forgot-pass-utils';
 
-console.log('process', process.env.REACT_APP_API_URL)
-
 const useStyles = makeStyles(theme => ({
   main: {
     backgroundColor: colors.p3,

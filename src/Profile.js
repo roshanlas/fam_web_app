@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from './BottomNavigation';
-import FixedContainer from './FixedContainer';
 import ProfileSummary from './ProfileSummary';
+import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import colors from './colorTheme';
 import './App.css';
+import { AppContext } from './App';
 
 const useStyles = makeStyles({
   profile: {
@@ -16,13 +18,17 @@ const useStyles = makeStyles({
     width: '100%'
   },
   infoCard: {
+    display: 'block',
     padding: '1rem 2rem',
     marginTop: '-2rem',
     minHeight: '2rem',
     borderRadius: '2rem 0 0 0',
     backgroundColor: colors.pink2,
     width: '100%',
-    color: 'white'
+    color: 'white',
+    '&:hover': {
+      textDecoration: 'none'
+    }
   },
   infoSubHead: {
     display: 'flex',
@@ -33,32 +39,84 @@ const useStyles = makeStyles({
 
 const InfoCard = (prop) => {
   return (
-    <div className={prop.className} style={prop.style}>
+    <Link className={prop.className} style={prop.style}
+    component={RouterLink} to={prop.to}>
     {prop.children}
-    </div>
+    </Link>
+  )
+}
+
+export const submitData = async (formData, service) => {
+  return await fetch(
+      // URL
+      `${process.env.REACT_APP_STORY_URL}/${service}`, 
+      // Data
+      {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers: {"Content-Type": "application/json"}
+      }
   )
 }
 
 const Profile = () => {
+
   const classes = useStyles();
+  const [globalState, setGlobalState] = useContext(AppContext);
+
+  const getStoryOfDay = () => {
+    submitData({}, 'story-of-day')
+    .then( async res => {
+      let ret = await res.json();
+      if(res.ok) {
+
+        setGlobalState({
+          ...globalState, 
+          calendar: ret.calendar,
+          currentDay: ret.currentDay,
+          dayOfMonth: ret.dayOfMonth,
+          storyID: ret.story.storyID,
+          person: ret.story.person,
+          occupation: ret.story.occupation,
+          title: ret.story.title,
+          description: ret.story.description,
+          questions: ret.story.questions
+        });
+      }
+    });
+  };
+
+ 
+
+  useEffect(()=>{
+    if(!globalState.currentDay) {
+      getStoryOfDay();
+    }
+  }, []);
+  
   return (
     <div className={classes.profile}>
         <ProfileSummary 
-          src="https://unlockwomenspower.files.wordpress.com/2012/06/ratidzo-mambo-head-shot-1.jpg?w=390&h=586&zoom=2" />
+          story={globalState.story}
+          src="./images/profile.jpg" />
 
         <div className={classes.infoGroup}>
-          <InfoCard className={classes.infoCard}
+          <InfoCard to="/questionnaire"
+          className={classes.infoCard}
           style={{backgroundColor: colors.pink2}}>
-            <h2>Day 1 - Answers Pending</h2>
+            <h2>Day {globalState.dayOfMonth} - Answers Pending</h2>
           </InfoCard>
-          <InfoCard className={classes.infoCard}
+          <InfoCard to="/story"
+          className={classes.infoCard}
           style={{backgroundColor: colors.g2}}>
             <div className={classes.infoSubHead}>
-              <h4>Day 1. Story of the Day</h4>
-              <h4>Pharmacist</h4>
+              <h4>Day {globalState.dayOfMonth} Story of the Day</h4>
+              <h4>{globalState.occupation}</h4>
             </div>
-            <h2>Dr. Stella</h2>
-            <p>Dr. Stella Okoli, a Nigerian pharmacist and entreprenuer has defied...</p>
+            <h2>{globalState.person} -  {globalState.title}</h2>
+            <p style={{width: 'calc(100% - 5rem)'}}>{
+              globalState.description ? globalState.description.slice(0,100).concat('...') : ''
+            }</p>
           </InfoCard>
         </div>
         <BottomNavigation />

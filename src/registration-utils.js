@@ -81,7 +81,23 @@ export const submitData = async (formData, service) => {
         {
             method: 'POST',
             body: JSON.stringify(formData),
-            headers: {"Content-Type": "application/json"}
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.token}`
+            }
+        }
+    )
+}
+
+export const getData = async (service) => {
+    return await fetch(
+        // URL
+        `${process.env.REACT_APP_API_URL}/${service}`,
+        {
+            headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.token}`
+            }
         }
     )
 }
