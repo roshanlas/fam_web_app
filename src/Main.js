@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Logo from './Logo';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import colors from './colorTheme';

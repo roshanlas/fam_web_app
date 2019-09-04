@@ -140,17 +140,9 @@ const SignIn = (props) => {
                 errorDescription: '',
                 successMessage: true,
                 toProfile: true,
-            });
-
-            setGlobalState({
-              ...globalState,
-              loginStatus: true,
-              firstName: ret.firstName,
-              lastName: ret.lastName,
-              token: ret.token
+                ret
             });
         } else {
-          console.log(res.status)
           // Handle the error
           setState({ 
               ...state, 
@@ -176,8 +168,15 @@ const SignIn = (props) => {
   }
 
   useEffect(()=>{
-    if (state.toProfile === true || localStorage.getItem('token')) {
-      props.history.push('/profile')
+    if (localStorage.getItem('token') || state.ret) {
+      props.history.push('/profile');
+      setGlobalState({
+        ...globalState,
+        loginStatus: true,
+        firstName: state.ret ? state.ret.firstName : localStorage.getItem('firstName'),
+        lastName: state.ret ? state.ret.lastName : localStorage.getItem('lastName'),
+        token: state.ret ? state.ret.token : localStorage.getItem('token')
+      });
     }
   });
 
@@ -237,16 +236,6 @@ const SignIn = (props) => {
             An error occured. Please try again. <br/>
             {state.errorDescription}
           </div> 
-        }
-
-        { 
-          state.successMessage && 
-            <div>
-              <p>
-              You have been registered successfully! You will be receiving an email
-              from us shortly.
-              </p>
-            </div> 
         }
 
         { 

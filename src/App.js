@@ -8,7 +8,6 @@ import { PrivateRoute } from './PrivateRoute';
 import Main from './Main';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
-import Login from './Login';
 import About from './About';
 import Challenge from './Challenge';
 import TermsConditions from './TermsConditions';

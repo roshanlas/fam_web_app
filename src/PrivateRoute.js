@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Redirect, Route} from 'react-router-dom';
+import { AppContext } from './App';
 
-export const PrivateRoute = ({ component: Component, ...rest }) =>
-    <Route 
+export const PrivateRoute = ({ component: Component, ...rest }) => {
+
+    const [globalState] = useContext(AppContext);
+    
+    return (<Route 
         {...rest}
-        render={props=> localStorage.getItem('token') ? (
+        render={props=> globalState.user.token || localStorage.getItem('token') ? (
             <Component {...props} />
         ) : (
             <Redirect
@@ -13,4 +17,5 @@ export const PrivateRoute = ({ component: Component, ...rest }) =>
                 }}
             />
         )}
-    />
+    />)
+}
