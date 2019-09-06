@@ -58,8 +58,10 @@ describe('render', ()=> {
         jest.clearAllMocks();
     });
 
-    it('should render without crashing',()=>{
-        expect(wrapper).toMatchSnapshot();
+    it('should render without crashing', async ()=>{
+        await act(async () => {
+            await expect(wrapper).toMatchSnapshot();
+        });
     });
 
     it('should set saved to true if draft button clicked', async ()=> {  
@@ -89,6 +91,12 @@ describe('render', ()=> {
             await wrapper0.find('.btn-submit').at(0).simulate('click');
             await wrapper0.find('.btn-confirm').at(0).simulate('click');
             expect(wrapper0.update().find('.prompt.open').at(0)).toHaveLength(0);
+        });
+    });
+
+    it('should load answers if user has submission', async () => {
+        await act(async () => {
+            
         });
     });
 

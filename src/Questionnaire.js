@@ -133,7 +133,8 @@ const Questionnaire = (props) => {
         error: false,
         prompt: 'hidden',
         submit: '',
-        answersLoading: true
+        answersLoading: true,
+        submission: []
     });
     let questions = globalState.questions? globalState.questions : [];
     let count =0;
@@ -296,9 +297,7 @@ const Questionnaire = (props) => {
         if(questions.length === 0) {
             props.history.push(`/profile`)
         }
-        count = 0;
     });
-
 
     return(
         <div className={`${classes.questionnaire}`}>
