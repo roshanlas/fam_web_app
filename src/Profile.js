@@ -86,13 +86,11 @@ const Profile = () => {
     });
   };
 
- 
-
   useEffect(()=>{
     if(!globalState.currentDay) {
       getStoryOfDay();
     }
-  }, []);
+  });
   
   return (
     <div className={classes.profile}>

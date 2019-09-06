@@ -47,6 +47,11 @@ const useStyles = makeStyles({
             outline: 'none'
         }
     },
+    btnGroup: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        paddingBottom: '2em'
+    },
     button: {
         color: 'white',
         width: '9rem',
@@ -121,7 +126,7 @@ const useStyles = makeStyles({
 
 const Questionnaire = (props) => {
     const classes = useStyles();
-    const [ globalState, setGlobalState ] = useContext(AppContext);
+    const [ globalState ] = useContext(AppContext);
     const [ state, setState ] = useState({ 
         draftSaved: false, 
         loading: false,
@@ -143,21 +148,21 @@ const Questionnaire = (props) => {
         .then(async res => {
             let ret = await res.json();
             if(res.ok) {
-                setGlobalState({
-                    ...globalState,
+                setState({
+                    ...state,
                     submission: ret.submission === null ? [] : ret.submission
                 });
             } else {
-                setGlobalState({
-                    ...globalState,
+                setState({
+                    ...state,
                     submission: false
                 })
             }
         })
         .catch(err => {
             console.log('err', err)
-            setGlobalState({
-                ...globalState,
+            setState({
+                ...state,
                 submission: false
             })
         });
@@ -282,10 +287,9 @@ const Questionnaire = (props) => {
         })
     };
 
-
     useEffect(()=>{
         
-        if(globalState.submission === undefined) {
+        if(state.submission === undefined) {
             getStudentSubmission();
         }
     
@@ -310,7 +314,7 @@ const Questionnaire = (props) => {
                 </div>
                 <h2 className={classes.heading}>{globalState.person}</h2>
                 
-                {globalState.submission && questions.map(question=>{
+                {state.submission && questions.map(question=>{
                         var e = <div key={count}>
                                 <h2>{`Question ${count+1}:`}</h2>
                                 <p>{question.title}</p>
@@ -318,8 +322,8 @@ const Questionnaire = (props) => {
                                 ref={comp=>fields.push(comp)}
                                 className={classes.textbox} 
                                 defaultValue={
-                                    globalState.submission.length > 0 ? 
-                                        globalState.submission[count].answer : ''
+                                    state.submission.length > 0 ? 
+                                        state.submission[count].answer : ''
                                 }/>
                             </div>
                         count++; return e;
@@ -327,7 +331,7 @@ const Questionnaire = (props) => {
                 )} 
 
                 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2em' }}>
+                <div className={classes.btnGroup}>
                     { !state.loading && 
                         <Button 
                             onClick={saveDraft}
