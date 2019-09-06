@@ -182,7 +182,9 @@ const SignUp = () => {
 
               if(field === "country") {
                 return (
-                  <div className={`${field} ${classes.inputField} ${error} ${required}`}>
+                  <div 
+                  key={field}
+                  className={`${field} ${classes.inputField} ${error} ${required}`}>
                     <select
                       key={field}
                       className={classes.dropdown}
@@ -191,7 +193,7 @@ const SignUp = () => {
                     >
                       <option>Select Country</option>
                       {countriesList.map(
-                        country=><option value={country.name}>{country.name}</option>
+                        country=><option key={country.name} value={country.name}>{country.name}</option>
                       )}
                     </select>
                   </div>
