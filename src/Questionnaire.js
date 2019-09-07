@@ -138,17 +138,17 @@ const Questionnaire = (props) => {
         submissionsFetched: false
     });
     let questions = globalState.questions? globalState.questions : [];
-    let count =0;
+    let count = 0;
     let fields = [];
     let answers;
-    
+
     const getStudentSubmission = () => {
         getData(
             `submission/retrieve/${globalState.storyID}`, 
             'GET'
         )
         .then(async res => {
-            let ret = await res.json();
+            let ret = await Promise.resolve(res.json());
             if(res.ok) {
                 setState({
                     ...state,
@@ -192,7 +192,7 @@ const Questionnaire = (props) => {
             final: false
         }, 'submission/submit')
         .then(async res=>{
-            let ret = Promise.resolve(res.json());
+            let ret = await Promise.resolve(res.json());
             if(res.ok) {
                 setState(
                     { ...state, draftSaved: true, loading: false }
@@ -292,7 +292,7 @@ const Questionnaire = (props) => {
 
     useEffect(()=>{
         if(!state.submissionsFetched) {
-            getStudentSubmission();
+            getStudentSubmission();   
         }
     
         if(questions.length === 0) {
@@ -314,39 +314,45 @@ const Questionnaire = (props) => {
                 </div>
                 <h2 className={classes.heading}>{globalState.person}</h2>
                 
+                { !state.submissionsFetched && 
+                    <p>Loading...</p>
+                }
                 {state.submissionsFetched && questions.map(question=>{
-                        var e = <div key={count}>
-                                <h2>{`Question ${count+1}:`}</h2>
-                                <p>{question.title}</p>
-                                <textarea 
-                                ref={comp=>fields.push(comp)}
-                                className={classes.textbox} 
-                                defaultValue={
-                                    state.submission.length > 0 ? 
-                                        state.submission[count].answer : ''
-                                }/>
-                            </div>
-                        count++; return e;
+                        var e = <div className="question" key={count}>
+                                    <h2>{`Question ${count+1}:`}</h2>
+                                    <p>{question.title}</p>
+                                    <textarea 
+                                    ref={comp=>fields.push(comp)}
+                                    className={classes.textbox} 
+                                    defaultValue={
+                                        state.submission.length > 0 ? 
+                                            state.submission[count].answer : ''
+                                    }/>
+                                </div>
+                            count++; return e;
                     }
                 )} 
 
-                
-                <div className={classes.btnGroup}>
-                    { !state.loading && 
+                {
+                    state.submissionsFetched &&
+                    <div className={classes.btnGroup}>
+                        { !state.loading && 
+                            <Button 
+                                onClick={saveDraft}
+                                st={state.draftSaved.toString()}
+                                className={`btn-draft ${classes.button}`}>
+                                    Save Draft {state.draftSaved && <DoneIcon className={classes.doneIcon}/>}
+                            </Button> 
+                        }
+                        { state.loading && <div className={`${classes.loadingButton}`}>Please wait</div>}
                         <Button 
-                            onClick={saveDraft}
-                            st={state.draftSaved.toString()}
-                            className={`btn-draft ${classes.button}`}>
-                                Save Draft {state.draftSaved && <DoneIcon className={classes.doneIcon}/>}
-                        </Button> 
-                    }
-                    { state.loading && <div className={`${classes.loadingButton}`}>Please wait</div>}
-                    <Button 
-                        onClick={promptSave}
-                        className={`btn-submit ${classes.button} ${state.submit}`}>
-                            Submit
-                    </Button>
-                </div>
+                            onClick={promptSave}
+                            className={`btn-submit ${classes.button} ${state.submit}`}>
+                                Submit
+                        </Button>
+                    </div>
+                }
+
                 { state.error && <p className={classes.error}>An error occured. Please try again.</p>}
 
                 <div className={`${classes.prompt} ${classes[state.prompt]} prompt ${state.prompt}`}>
