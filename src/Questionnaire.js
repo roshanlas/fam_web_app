@@ -134,13 +134,14 @@ const Questionnaire = (props) => {
         prompt: 'hidden',
         submit: '',
         answersLoading: true,
-        submission: []
+        submission: [],
+        submissionsFetched: false
     });
     let questions = globalState.questions? globalState.questions : [];
     let count =0;
     let fields = [];
     let answers;
-
+    
     const getStudentSubmission = () => {
         getData(
             `submission/retrieve/${globalState.storyID}`, 
@@ -151,12 +152,13 @@ const Questionnaire = (props) => {
             if(res.ok) {
                 setState({
                     ...state,
-                    submission: ret.submission === null ? [] : ret.submission
+                    submission: ret.submission === null ? [] : ret.submission,
+                    submissionsFetched: true,
                 });
             } else {
                 setState({
                     ...state,
-                    submission: false
+                    submissionsFetched: true
                 })
             }
         })
@@ -164,7 +166,7 @@ const Questionnaire = (props) => {
             console.log('err', err)
             setState({
                 ...state,
-                submission: false
+                submissionsFetched: true
             })
         });
     };
@@ -289,8 +291,7 @@ const Questionnaire = (props) => {
     };
 
     useEffect(()=>{
-        
-        if(state.submission === undefined) {
+        if(!state.submissionsFetched) {
             getStudentSubmission();
         }
     
@@ -313,7 +314,7 @@ const Questionnaire = (props) => {
                 </div>
                 <h2 className={classes.heading}>{globalState.person}</h2>
                 
-                {state.submission && questions.map(question=>{
+                {state.submissionsFetched && questions.map(question=>{
                         var e = <div key={count}>
                                 <h2>{`Question ${count+1}:`}</h2>
                                 <p>{question.title}</p>
