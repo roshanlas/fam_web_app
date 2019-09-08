@@ -87,7 +87,6 @@ const Profile = () => {
   };
 
   useEffect(()=>{
-    console.log('globalState.currentDay', globalState.currentDay)
     if(globalState.currentDay === undefined) {
       getStoryOfDay();
     }
