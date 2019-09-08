@@ -67,7 +67,7 @@ const Profile = () => {
   const getStoryOfDay = () => {
     submitData({}, 'story-of-day')
     .then( async res => {
-      let ret = await res.json();
+      let ret = await Promise.resolve(res.json());
       if(res.ok) {
 
         setGlobalState({
@@ -87,7 +87,8 @@ const Profile = () => {
   };
 
   useEffect(()=>{
-    if(!globalState.currentDay) {
+    console.log('globalState.currentDay', globalState.currentDay)
+    if(globalState.currentDay === undefined) {
       getStoryOfDay();
     }
   });
