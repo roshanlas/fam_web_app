@@ -18,6 +18,7 @@ const useStyles = makeStyles({
         backgroundPosition: 'center',
         height: '100%',
         minHeight: '100vh',
+        paddingBottom: '2em',
         color: 'white'
     },
     backButton: {
@@ -57,6 +58,22 @@ const useStyles = makeStyles({
         width: '9rem',
         display: 'block',
         margin: '0.6rem 0 0 0.6rem',
+        padding: '0.4rem 0rem',
+        fontSize: '1rem',
+        maxWidth: '12rem',
+        fontFamily: 'Oswald, sans-serif !important',
+        borderRadius: '.8rem',
+        textTransform: 'none',
+        backgroundColor: colors.g3,
+        '&:hover': {
+          backgroundColor: colors.g3,
+        }
+    },
+    button2: {
+        color: 'white',
+        width: '9rem',
+        display: 'block',
+        margin: '0 0.6rem 0 0',
         padding: '0.4rem 0rem',
         fontSize: '1rem',
         maxWidth: '12rem',
@@ -121,7 +138,14 @@ const useStyles = makeStyles({
         left: '50%',
         transform: 'translate(-50%,-50%)',
         boxShadow: '1px 1px 10px rgba(0,0,0,0.5)'
-    }
+    },
+    success: {
+        width: '100%',
+        padding: '8px 12px',
+        background: '#11eac5',
+        textAlign: 'center',
+        borderRadius: '5px'
+    },
 });
 
 const Questionnaire = (props) => {
@@ -154,6 +178,7 @@ const Questionnaire = (props) => {
                     ...state,
                     submission: ret.submission === null ? [] : ret.submission,
                     submissionsFetched: true,
+                    submit: ret.final? 'done': ''
                 });
             } else {
                 setState({
@@ -314,6 +339,8 @@ const Questionnaire = (props) => {
                 </div>
                 <h2 className={classes.heading}>{globalState.person}</h2>
                 
+                { state.submit && <p className={classes.success}>You have submitted the question of the day!</p> }
+
                 { !state.submissionsFetched && 
                     <p>Loading...</p>
                 }
@@ -335,6 +362,7 @@ const Questionnaire = (props) => {
 
                 {
                     state.submissionsFetched &&
+                    state.submit !== 'done' &&
                     <div className={classes.btnGroup}>
                         { !state.loading && 
                             <Button 
@@ -359,8 +387,10 @@ const Questionnaire = (props) => {
                     <div className={classes.promptBox}>
                         <p>Are you sure you want to submit your answers?</p>
                         <p>You will not be able to change your answers later.</p>
-                        <Button className="btn-confirm" onClick={submitAndConfirm}>Submit</Button>
-                        <Button className="btn-cancel" onClick={closePrompt}>Cancel</Button>
+                        <div style={{display: 'flex'}}>
+                            <Button className={`btn-confirm ${classes.button2}`} onClick={submitAndConfirm}>Submit</Button>
+                            <Button className={`btn-cancel ${classes.button2}`} onClick={closePrompt}>Cancel</Button>
+                        </div>
                     </div>
                 </div>
             </Container>

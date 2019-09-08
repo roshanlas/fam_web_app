@@ -62,3 +62,20 @@ h2 {
 h3, h4 {
   margin: 0px;
 }
+
+.story img {
+  display: block;
+  width: 256px;
+  margin: 0 auto;
+  border-radius: 100%;
+}
+
+.story .quote {
+  margin: 2em 0;
+  background: #8EAD9F;
+  padding: 2em;
+  border-radius: 30px;
+  color: white;
+  font-style: italic;
+  font-weight: bold;
+}
