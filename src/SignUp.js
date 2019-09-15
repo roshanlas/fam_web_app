@@ -181,6 +181,7 @@ const SignUp = () => {
       <Container maxWidth="xs">
         <h1>Join Female and More</h1>
 
+        <p>* Indicated required fields</p>
         {Object.keys(fields).map(
           field=>{
               let error;
