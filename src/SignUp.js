@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100%',
-    minHeight: '100vh'
+    minHeight: '100vh',
+    paddingBottom: '2em'
   },
   header: {
     position: 'relative',
@@ -52,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
   errorMsg: {
     color: 'red',  
-    fontSize: '1.4rem',
+    fontSize: '1.6rem',
     margin: 0
   },
   signup: {
@@ -65,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     maxWidth: '12rem',
     display: 'block',
-    margin: '2.4rem auto 1.6rem',
+    margin: '2.4rem auto 0',
     padding: '0.8rem 0.2rem',
     '&:hover': {
       backgroundColor: colors.g3,
