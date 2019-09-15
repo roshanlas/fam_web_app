@@ -57,8 +57,8 @@ export const validateFields = (formData) => {
     if(formData['lastName'].length === 0) {
         Object.assign(errors, {'lastName':'Please enter your last name'})
     }
-    if(formData['dob'].length === 0) {
-        Object.assign(errors, {'dob':'Please enter your date of birth'})
+    if(formData['dob'].search(/^(([1-9])|(0[1-9])|(1[0-2]))\/((0[1-9])|([1-31]))\/((\d{2})|(\d{4}))$/) < 0) {
+        Object.assign(errors, {'dob':'Please enter a valid date (mm/dd/yyyy)'})
     }
     if(formData['city'].length === 0) {
         Object.assign(errors, {'city':'Please enter your city'})

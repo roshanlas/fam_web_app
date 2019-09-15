@@ -9,6 +9,11 @@ import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './registration-utils';
+import DateFnsUtils from '@date-io/date-fns';
+import { 
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import countriesList from './countries-list';
 
 const useStyles = makeStyles(theme => ({
@@ -105,10 +110,14 @@ const SignUp = () => {
     errors: null,
     successMessage: false,
     errorMessage: false,
-    errorDescription: ''
+    errorDescription: '',
+    selectedDate: new Date('2005-08-18T21:11:54')
   });
   const classes = useStyles();
 
+  const handleDateChange = (selectedDate) => {
+    setState({ ...state, selectedDate })
+  }
   const doSignUp = () => {
 
     let formData = populateFormData(state.fields);
@@ -197,6 +206,32 @@ const SignUp = () => {
                       )}
                     </select>
                   </div>
+                )
+              } 
+              else if (field === "dobX") {
+                return(
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                    onChange={handleDateChange}
+                    value={state.selectedDate}
+                    key={field}
+                    margin="normal"
+                    className={`field ${field} ${classes.inputField} ${error} ${required}`}
+                    format="mm/dd/yyyy"
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                  </MuiPickersUtilsProvider>
+                )
+              } else if(field === "password" || field === "repeatPassword") {
+                return (
+                  <input type="password"
+                    key={field}
+                    ref={comp=>fields[field].comp = comp}
+                    className={`${field} ${classes.inputField} ${error} ${required}`}
+                    placeholder={fields[field].label}
+                  />
                 )
               } else {
                 return (
