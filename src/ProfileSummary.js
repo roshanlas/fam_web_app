@@ -144,12 +144,7 @@ export default function ProfileSummary(prop) {
             <p className={classes.text2}>
               {`${localStorage.firstName} ${localStorage.lastName}`}
             </p>
-            <p className={classes.text3}>
-              <CardGiftcardIcon className={classes.icon}/> 37 Points
-            </p>
-            <p className={classes.text3}>
-              In 10 years I want to be a sucessful lawyer
-            </p>
+           
             { globalState.calendar && <DailyProgress 
             calendar={globalState.calendar}
             dayOfMonth={globalState.dayOfMonth}
