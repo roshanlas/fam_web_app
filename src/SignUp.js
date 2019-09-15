@@ -181,7 +181,7 @@ const SignUp = () => {
       <Container maxWidth="xs">
         <h1>Join Female and More</h1>
 
-        <p>* Indicated required fields</p>
+        <p>* Indicates required fields</p>
         {Object.keys(fields).map(
           field=>{
               let error;
@@ -201,7 +201,7 @@ const SignUp = () => {
                       ref={comp=>fields[field].comp = comp}
                       placeholder={fields[field].label}
                     >
-                      <option>Select Country</option>
+                      <option>Select Country*</option>
                       {countriesList.map(
                         country=><option key={country.name} value={country.name}>{country.name}</option>
                       )}
