@@ -10,7 +10,7 @@ export const fields = {
     occupation: {comp: null, error: false, label: 'Occupation', required: false}, 
     residence: {comp: null, error: false, label: 'Residence', required: false},
     country: {comp: null, error: false, label: 'Country*', required: true}, 
-    city: {comp: null, error: false, label: 'City', required: true},
+    city: {comp: null, error: false, label: 'City*', required: true},
     homeAddress: {comp: null, error: false, label: 'Home Address', required: false}, 
     postCode: {comp: null, error: false, label: 'Post Code', required: false}
   };
