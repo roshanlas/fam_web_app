@@ -34,6 +34,10 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     width: 'calc(100% - 3rem)'
+  },
+  loading: {
+    display: 'block',
+    padding: '1em 3em'
   }
 });
 
@@ -75,7 +79,7 @@ const Profile = () => {
           calendar: ret.calendar,
           currentDay: ret.currentDay,
           dayOfMonth: ret.dayOfMonth,
-          storyID: '0002',//ret.story.storyID,
+          storyID: '0003',//ret.story.storyID,
           person: ret.story.person,
           occupation: ret.story.occupation,
           title: ret.story.title,
@@ -98,6 +102,13 @@ const Profile = () => {
           story={globalState.story}
           src="./images/profile.jpg" />
 
+          {!globalState.description &&
+            <div className={classes.loading}>
+              Loading...
+            </div>
+          }
+          
+        
         <div className={classes.infoGroup}>
           <InfoCard to="/questionnaire"
           className={classes.infoCard}

@@ -7,7 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
-import Story002 from './story_documents/002';
+import Story003 from './story_documents/003';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -48,7 +48,7 @@ const Story = () => {
           <Logo />
         </div>
       <Container maxWidth="sm">
-        <Story002 />
+        <Story003 />
         <Link className={classes.link} 
         component={RouterLink} to="/questionnaire">Go to questions</Link>
       </Container>
