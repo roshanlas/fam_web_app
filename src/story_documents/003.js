@@ -1,6 +1,6 @@
 import React from 'react';
 export default ()=><div className="story">
-    <h1>Amin Slaoui</h1>
+    <h1>Oke Maduewesi</h1>
     <img alt="Amina Slaoui
 Profile" src="./story_documents/003.jpg" width="100%"/>
     <h2>Profile</h2>
