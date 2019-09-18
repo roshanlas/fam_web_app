@@ -1,0 +1,16 @@
+import React from 'react';
+export default ()=><div className="story">
+    <h1>Maud Chifamba</h1>
+    <img alt="Maud Chifamba" src="./story_documents/004.jpg" width="100%"/>
+    <h2>Profile</h2>
+    <p>Maud Chifamba, a self-schooled orphan in 2012, made history as the youngest person to secure admission into a university in Zimbabwe and Southern Africa as a whole at the age of 14. The academic whizz-kid, by her feat, secured nearly $10,000 in scholarship funding to cover her education expenses at the University of Zimbabwe due to her sterling performance at the Advance-Level examination. Maud repeated history again when she graduated as the youngest student from any university in Zimbabwe at the age of 18 with a Bachelor of Accounting Honors Degree in 2016.</p>
+    <p className="quote">“My parents’ death really motivated me to work harder because there was no one to take care of me except myself in the future. That was a motivator for me to have something to do with my life.”</p>
+    <h2>The Experience</h2>
+    <p>Maud was born on November 19, 1997, to a poor family in the Hunters resettlement community in Chegutu, central Zimbabwe. Her father died when she was just five years old and her mother also passed away when she was 13 years old. They were so poor that her two brothers had to work at a farm to make a living, and since that could not cover her school fees, Maud had to drop out of secondary school. With abject poverty and no hope of returning back to school, she was faced with many options including early marriage, but she opted to home-school herself, a choice that would change the rest of her life!</p>
+    <h2>The Steps To Success</h2>
+    <p>Maud Chifamba had always demonstrated high academic aptitude. For instance, at some point, her primary school teachers moved her up from Grade 3 to Grade 6 and when she took her final primary schools examinations at the age of 9, she obtained top marks in all her subjects. So coupled with this self-confidence, Maud decided to study at home, embarking on a disciplined study routine that lasted several hours during the day and well into the dead of night. With the help of her brothers working at the farm, who paid the examination fees for her to sit for the A-Levels Examination, she excelled and to the amazement of all, secured admission to study accounting at the university at age 14. “It’s phenomenal, especially if you consider that for her A-Levels she was not in formal school,” says Gershem Pasi, the Commissioner-General of the Zimbabwe Revenue Authority, the body that sponsored Maud’s university education. She graduated from the University of Zimbabwe at the age of 18 with a Bachelor of Accounting Honors Degree in 2016 with huge joy, pomp and celebration. In 2012, Maud was listed fifth on the Forbes Top 100 Youngest Powerful Women in Africa.</p>
+    <h2>Quotes from Oke Maduewesi</h2>
+    <p>“My parents’ death really motivated me to work harder because there was no one to take care of me except myself in the future. That was a motivator for me to have something to do with my life.”</p>
+    <p>“I studied very hard, for the biggest part of the day and even into the night.”</p>
+    <h2>GET INSPIRED!</h2>
+</div>
