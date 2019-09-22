@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import Button from '@material-ui/core/Button';

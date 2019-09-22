@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Logo from './Logo';
+import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppContext } from './App';
+import Story004 from './story_documents/004';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -13,17 +15,30 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100%',
-    minHeight: '100vh'
+    minHeight: '100vh',
+    padding: ' 0 0 2em 0'
   },
   header: {
     position: 'relative'
+  },
+  link: {
+    backgroundColor: colors.g3,
+    borderRadius: '1.4rem',
+    color: 'white',
+    textTransform: 'none',
+    textAlign: 'center',
+    fontSize: '1.4rem',
+    width: '100%',
+    maxWidth: '12rem',
+    display: 'block',
+    margin: '2.4rem auto 1.6rem',
+    padding: '0.8rem 0.2rem'
   }
 }));
 
 
 const Story = () => {
   const classes = useStyles();
-  const [ globalState ] = useContext(AppContext)
 
   return (
     <div className={classes.main}>
@@ -33,8 +48,9 @@ const Story = () => {
           <Logo />
         </div>
       <Container maxWidth="sm">
-        <h1>{globalState.title}</h1>
-        <p>{globalState.description}</p>
+        <Story004 />
+        <Link className={classes.link} 
+        component={RouterLink} to="/questionnaire">Go to questions</Link>
       </Container>
     </div>
   );

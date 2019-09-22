@@ -1,16 +1,16 @@
 export const fields = {
-    email: {comp: null, error: false, label: 'Email', required: true}, 
-    password: {comp: null, error: false, label: 'Password', required: true}, 
-    repeatPassword: {comp: null, error: false, label: 'Repeat Password', required: true}, 
-    firstName: {comp: null, error: false, label: 'First Name', required: true}, 
-    lastName: {comp: null, error: false, label: 'Last Name', required: true},
-    dob: {comp: null, error: false, label: 'Date of Birth dd/mm/yyyy', required: true}, 
-    gender: {comp: null, error: false, label: 'Gender', required: true}, 
+    email: {comp: null, error: false, label: 'Email*', required: true}, 
+    password: {comp: null, error: false, label: 'Password*', required: true}, 
+    repeatPassword: {comp: null, error: false, label: 'Repeat Password*', required: true}, 
+    firstName: {comp: null, error: false, label: 'First Name*', required: true}, 
+    lastName: {comp: null, error: false, label: 'Last Name*', required: true},
+    dob: {comp: null, error: false, label: 'Date of Birth* dd/mm/yyyy', required: true}, 
+    gender: {comp: null, error: false, label: 'Gender*', required: true}, 
     marriageStatus: {comp: null, error: false, label: 'Marriage Status', required: false}, 
     occupation: {comp: null, error: false, label: 'Occupation', required: false}, 
     residence: {comp: null, error: false, label: 'Residence', required: false},
-    country: {comp: null, error: false, label: 'Country', required: true}, 
-    city: {comp: null, error: false, label: 'City', required: true},
+    country: {comp: null, error: false, label: 'Country*', required: true}, 
+    city: {comp: null, error: false, label: 'City*', required: true},
     homeAddress: {comp: null, error: false, label: 'Home Address', required: false}, 
     postCode: {comp: null, error: false, label: 'Post Code', required: false}
   };
@@ -57,8 +57,8 @@ export const validateFields = (formData) => {
     if(formData['lastName'].length === 0) {
         Object.assign(errors, {'lastName':'Please enter your last name'})
     }
-    if(formData['dob'].length === 0) {
-        Object.assign(errors, {'dob':'Please enter your date of birth'})
+    if(formData['dob'].search(/^(([1-9])|(0[1-9])|(1[0-2]))\/((0[1-9])|([1-31]))\/((\d{2})|(\d{4}))$/) < 0) {
+        Object.assign(errors, {'dob':'Please enter a valid date (mm/dd/yyyy)'})
     }
     if(formData['city'].length === 0) {
         Object.assign(errors, {'city':'Please enter your city'})

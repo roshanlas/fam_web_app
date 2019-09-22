@@ -34,6 +34,10 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     width: 'calc(100% - 3rem)'
+  },
+  loading: {
+    display: 'block',
+    padding: '1em 3em'
   }
 });
 
@@ -67,7 +71,7 @@ const Profile = () => {
   const getStoryOfDay = () => {
     submitData({}, 'story-of-day')
     .then( async res => {
-      let ret = await res.json();
+      let ret = await Promise.resolve(res.json());
       if(res.ok) {
 
         setGlobalState({
@@ -75,7 +79,7 @@ const Profile = () => {
           calendar: ret.calendar,
           currentDay: ret.currentDay,
           dayOfMonth: ret.dayOfMonth,
-          storyID: ret.story.storyID,
+          storyID: '0004',//ret.story.storyID,
           person: ret.story.person,
           occupation: ret.story.occupation,
           title: ret.story.title,
@@ -86,13 +90,11 @@ const Profile = () => {
     });
   };
 
- 
-
   useEffect(()=>{
-    if(!globalState.currentDay) {
+    if(globalState.currentDay === undefined) {
       getStoryOfDay();
     }
-  }, []);
+  });
   
   return (
     <div className={classes.profile}>
@@ -100,6 +102,13 @@ const Profile = () => {
           story={globalState.story}
           src="./images/profile.jpg" />
 
+          {!globalState.description &&
+            <div className={classes.loading}>
+              Loading...
+            </div>
+          }
+          
+        
         <div className={classes.infoGroup}>
           <InfoCard to="/questionnaire"
           className={classes.infoCard}

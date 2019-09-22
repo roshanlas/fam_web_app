@@ -9,6 +9,7 @@ import { AppContext } from './App'
 import Questionnaire from './Questionnaire';
 import { act } from 'react-dom/test-utils';
 
+
 jest.mock('./registration-utils', () => ({
     submitData: jest.fn().mockImplementation(
         () => Promise.resolve(
@@ -22,7 +23,10 @@ jest.mock('./registration-utils', () => ({
         () => Promise.resolve(
             {
                 ok: true, 
-                json: jest.fn().mockResolvedValue(true)
+                json: jest.fn().mockResolvedValue(true),
+                ret: {
+                    submission: []
+                }
             }
         )
     )
@@ -37,6 +41,10 @@ describe('render', ()=> {
     // const setState = jest.fn();
     // const useStateSpy = jest.spyOn(registrationUtils, 'submitData')
     // useStateSpy.mockImplementation((init) => {ok: true} );
+
+    const mock = jest.spyOn(React, 'useState');  // spy on fs.readFileSync()
+    mock.mockImplementation(data => [data, x=>x]);  // replace the implementation
+
     const props = {
         history: {
             push: jest.fn()
@@ -58,37 +66,45 @@ describe('render', ()=> {
         jest.clearAllMocks();
     });
 
-    it('should render without crashing',()=>{
-        expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should set saved to true if draft button clicked', async ()=> {  
+    it('should render without crashing', async ()=>{
         await act(async () => {
-            await wrapper0.find('.btn-draft').at(0).simulate('click', {target: { value: 'Foo' } })
-            expect(wrapper0.update().find('.btn-draft').at(0).props().st).toBe("true");
+            await expect(wrapper).toMatchSnapshot();
         });
     });
 
-    it('should prompt user when submit is clicked', async () => {
-        await act(async () => {
-            await wrapper0.find('.btn-submit').at(0).simulate('click');
-            expect(wrapper0.update().find('.prompt.open').at(0)).toHaveLength(1);
-        });
-    });
+    // it('should set saved to true if draft button clicked', async ()=> {  
+    //     await act(async () => {
+    //         await wrapper0.find('.btn-draft').at(0).simulate('click', {target: { value: 'Foo' } })
+    //         expect(wrapper0.update().find('.btn-draft').at(0).props().st).toBe("true");
+    //     });
+    // });
 
-    it('should close prompt when cancel is clicked', async () => {
-        await act(async () => {
-            await wrapper0.find('.btn-submit').at(0).simulate('click');
-            await wrapper0.find('.btn-confirm').at(0).simulate('click');
-            expect(wrapper0.update().find('.btn-submit.done').at(0)).toHaveLength(1);
-        });
-    });
+    // it('should prompt user when submit is clicked', async () => {
+    //     await act(async () => {
+    //         await wrapper0.find('.btn-submit').at(0).simulate('click');
+    //         expect(wrapper0.update().find('.prompt.open').at(0)).toHaveLength(1);
+    //     });
+    // });
+
+    // it('should close prompt when cancel is clicked', async () => {
+    //     await act(async () => {
+    //         await wrapper0.find('.btn-submit').at(0).simulate('click');
+    //         await wrapper0.find('.btn-confirm').at(0).simulate('click');
+    //         expect(wrapper0.update().find('.btn-submit.done').at(0)).toHaveLength(1);
+    //     });
+    // });
 
     it('should save when confirm is clicked', async () => {
         await act(async () => {
             await wrapper0.find('.btn-submit').at(0).simulate('click');
             await wrapper0.find('.btn-confirm').at(0).simulate('click');
             expect(wrapper0.update().find('.prompt.open').at(0)).toHaveLength(0);
+        });
+    });
+
+    it('should load answers if user has submission', async () => {
+        await act(async () => {
+            expect(wrapper0.find('.questionnaire').at(0)).toHaveLength(0);
         });
     });
 

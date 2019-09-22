@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
@@ -150,17 +150,9 @@ const SignIn = (props) => {
                 errorDescription: '',
                 successMessage: true,
                 toProfile: true,
-            });
-
-            setGlobalState({
-              ...globalState,
-              loginStatus: true,
-              firstName: ret.firstName,
-              lastName: ret.lastName,
-              token: ret.token
+                ret
             });
         } else {
-          console.log(res.status)
           // Handle the error
           setState({ 
               ...state, 
@@ -185,11 +177,18 @@ const SignIn = (props) => {
     })
   }
 
-  console.log('verified', verified);
-
-  if (state.toProfile === true) {
-    return <Redirect to='/profile' />
-  }
+  useEffect(()=>{
+    if (localStorage.getItem('token') || state.ret) {
+      props.history.push('/profile');
+      setGlobalState({
+        ...globalState,
+        loginStatus: true,
+        firstName: state.ret ? state.ret.firstName : localStorage.getItem('firstName'),
+        lastName: state.ret ? state.ret.lastName : localStorage.getItem('lastName'),
+        token: state.ret ? state.ret.token : localStorage.getItem('token')
+      });
+    }
+  });
 
   return (
     <div className={`SignIn ${classes.main}`}>
@@ -247,16 +246,6 @@ const SignIn = (props) => {
             An error occured. Please try again. <br/>
             {state.errorDescription}
           </div> 
-        }
-
-        { 
-          state.successMessage && 
-            <div>
-              <p>
-              You have been registered successfully! You will be receiving an email
-              from us shortly.
-              </p>
-            </div> 
         }
 
         { 

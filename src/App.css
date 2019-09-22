@@ -1,5 +1,6 @@
 body {
   font-family: 'Open Sans', sans-serif !important;
+  font-size: 1em !important;
   color: #263633 !important;
   background-color: #F1E4E1;
 }
@@ -60,4 +61,35 @@ h2 {
 
 h3, h4 {
   margin: 0px;
+}
+
+.story img {
+  display: block;
+  width: 256px;
+  margin: 0 auto;
+  border-radius: 100%;
+}
+
+.story .quote {
+  margin: 2em 0;
+  background: #8EAD9F;
+  padding: 2em;
+  border-radius: 30px;
+  color: white;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.field > div {
+  width: 100%;
+}
+
+.field > div > input {
+  font-size: 1.4em;
+  padding: 0px;
+}
+
+.field > div::after,
+.field > div::before {
+  border: none !important;
 }

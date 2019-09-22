@@ -18,6 +18,7 @@ const useStyles = makeStyles({
         backgroundPosition: 'center',
         height: '100%',
         minHeight: '100vh',
+        paddingBottom: '2em',
         color: 'white'
     },
     backButton: {
@@ -47,11 +48,32 @@ const useStyles = makeStyles({
             outline: 'none'
         }
     },
+    btnGroup: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        paddingBottom: '2em'
+    },
     button: {
         color: 'white',
         width: '9rem',
         display: 'block',
         margin: '0.6rem 0 0 0.6rem',
+        padding: '0.4rem 0rem',
+        fontSize: '1rem',
+        maxWidth: '12rem',
+        fontFamily: 'Oswald, sans-serif !important',
+        borderRadius: '.8rem',
+        textTransform: 'none',
+        backgroundColor: colors.g3,
+        '&:hover': {
+          backgroundColor: colors.g3,
+        }
+    },
+    button2: {
+        color: 'white',
+        width: '9rem',
+        display: 'block',
+        margin: '0 0.6rem 0 0',
         padding: '0.4rem 0rem',
         fontSize: '1rem',
         maxWidth: '12rem',
@@ -116,22 +138,31 @@ const useStyles = makeStyles({
         left: '50%',
         transform: 'translate(-50%,-50%)',
         boxShadow: '1px 1px 10px rgba(0,0,0,0.5)'
-    }
+    },
+    success: {
+        width: '100%',
+        padding: '8px 12px',
+        background: '#11eac5',
+        textAlign: 'center',
+        borderRadius: '5px'
+    },
 });
 
 const Questionnaire = (props) => {
     const classes = useStyles();
-    const [ globalState, setGlobalState ] = useContext(AppContext);
+    const [ globalState ] = useContext(AppContext);
     const [ state, setState ] = useState({ 
         draftSaved: false, 
         loading: false,
         error: false,
         prompt: 'hidden',
         submit: '',
-        answersLoading: true
+        answersLoading: true,
+        submission: [],
+        submissionsFetched: false
     });
     let questions = globalState.questions? globalState.questions : [];
-    let count =0;
+    let count = 0;
     let fields = [];
     let answers;
 
@@ -141,24 +172,26 @@ const Questionnaire = (props) => {
             'GET'
         )
         .then(async res => {
-            let ret = await res.json();
+            let ret = await Promise.resolve(res.json());
             if(res.ok) {
-                setGlobalState({
-                    ...globalState,
-                    submission: ret.submission === null ? [] : ret.submission
+                setState({
+                    ...state,
+                    submission: ret.submission === null ? [] : ret.submission,
+                    submissionsFetched: true,
+                    submit: ret.final? 'done': ''
                 });
             } else {
-                setGlobalState({
-                    ...globalState,
-                    submission: false
+                setState({
+                    ...state,
+                    submissionsFetched: true
                 })
             }
         })
         .catch(err => {
             console.log('err', err)
-            setGlobalState({
-                ...globalState,
-                submission: false
+            setState({
+                ...state,
+                submissionsFetched: true
             })
         });
     };
@@ -184,7 +217,7 @@ const Questionnaire = (props) => {
             final: false
         }, 'submission/submit')
         .then(async res=>{
-            let ret = Promise.resolve(res.json());
+            let ret = await Promise.resolve(res.json());
             if(res.ok) {
                 setState(
                     { ...state, draftSaved: true, loading: false }
@@ -282,19 +315,15 @@ const Questionnaire = (props) => {
         })
     };
 
-
     useEffect(()=>{
-        
-        if(globalState.submission === undefined) {
-            getStudentSubmission();
+        if(!state.submissionsFetched) {
+            getStudentSubmission();   
         }
     
         if(questions.length === 0) {
             props.history.push(`/profile`)
         }
-        count = 0;
     });
-
 
     return(
         <div className={`${classes.questionnaire}`}>
@@ -310,47 +339,58 @@ const Questionnaire = (props) => {
                 </div>
                 <h2 className={classes.heading}>{globalState.person}</h2>
                 
-                {globalState.submission && questions.map(question=>{
-                        var e = <div key={count}>
-                                <h2>{`Question ${count+1}:`}</h2>
-                                <p>{question.title}</p>
-                                <textarea 
-                                ref={comp=>fields.push(comp)}
-                                className={classes.textbox} 
-                                defaultValue={
-                                    globalState.submission.length > 0 ? 
-                                        globalState.submission[count].answer : ''
-                                }/>
-                            </div>
-                        count++; return e;
+                { state.submit && <p className={classes.success}>You have submitted the question of the day!</p> }
+
+                { !state.submissionsFetched && 
+                    <p>Loading...</p>
+                }
+                {state.submissionsFetched && questions.map(question=>{
+                        var e = <div className="question" key={count}>
+                                    <h2>{`Question ${count+1}:`}</h2>
+                                    <p>{question.title}</p>
+                                    <textarea 
+                                    ref={comp=>fields.push(comp)}
+                                    className={classes.textbox} 
+                                    defaultValue={
+                                        state.submission.length > 0 ? 
+                                            state.submission[count].answer : ''
+                                    }/>
+                                </div>
+                            count++; return e;
                     }
                 )} 
 
-                
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2em' }}>
-                    { !state.loading && 
+                {
+                    state.submissionsFetched &&
+                    state.submit !== 'done' &&
+                    <div className={classes.btnGroup}>
+                        { !state.loading && 
+                            <Button 
+                                onClick={saveDraft}
+                                st={state.draftSaved.toString()}
+                                className={`btn-draft ${classes.button}`}>
+                                    Save Draft {state.draftSaved && <DoneIcon className={classes.doneIcon}/>}
+                            </Button> 
+                        }
+                        { state.loading && <div className={`${classes.loadingButton}`}>Please wait</div>}
                         <Button 
-                            onClick={saveDraft}
-                            st={state.draftSaved.toString()}
-                            className={`btn-draft ${classes.button}`}>
-                                Save Draft {state.draftSaved && <DoneIcon className={classes.doneIcon}/>}
-                        </Button> 
-                    }
-                    { state.loading && <div className={`${classes.loadingButton}`}>Please wait</div>}
-                    <Button 
-                        onClick={promptSave}
-                        className={`btn-submit ${classes.button} ${state.submit}`}>
-                            Submit
-                    </Button>
-                </div>
+                            onClick={promptSave}
+                            className={`btn-submit ${classes.button} ${state.submit}`}>
+                                Submit
+                        </Button>
+                    </div>
+                }
+
                 { state.error && <p className={classes.error}>An error occured. Please try again.</p>}
 
                 <div className={`${classes.prompt} ${classes[state.prompt]} prompt ${state.prompt}`}>
                     <div className={classes.promptBox}>
                         <p>Are you sure you want to submit your answers?</p>
                         <p>You will not be able to change your answers later.</p>
-                        <Button className="btn-confirm" onClick={submitAndConfirm}>Submit</Button>
-                        <Button className="btn-cancel" onClick={closePrompt}>Cancel</Button>
+                        <div style={{display: 'flex'}}>
+                            <Button className={`btn-confirm ${classes.button2}`} onClick={submitAndConfirm}>Submit</Button>
+                            <Button className={`btn-cancel ${classes.button2}`} onClick={closePrompt}>Cancel</Button>
+                        </div>
                     </div>
                 </div>
             </Container>

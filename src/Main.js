@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Logo from './Logo';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import colors from './colorTheme';
@@ -71,13 +70,21 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     margin: '1.2rem auto 0',
     padding: '0.6rem 0.2rem'
-}
+  }
 }));
 
 
 
-const Main = () => {
+const Main = (props) => {
   const classes = useStyles();
+
+  useEffect(()=>{
+    if (localStorage.getItem('token')) {
+      props.history.push('/profile')
+    }
+  });
+
+
   return (
     <div className={classes.main}>
       <CssBaseline />

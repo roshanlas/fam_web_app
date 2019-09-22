@@ -9,6 +9,11 @@ import { BackButton } from './Heading';
 import colors from './colorTheme';
 import { makeStyles } from '@material-ui/core/styles';
 import { fields, populateFormData, validateFields, submitData } from './registration-utils';
+import DateFnsUtils from '@date-io/date-fns';
+import { 
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import countriesList from './countries-list';
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +22,8 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100%',
-    minHeight: '100vh'
+    minHeight: '100vh',
+    paddingBottom: '2em'
   },
   header: {
     position: 'relative',
@@ -47,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
   errorMsg: {
     color: 'red',  
-    fontSize: '1.4rem',
+    fontSize: '1.6rem',
     margin: 0
   },
   signup: {
@@ -60,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     maxWidth: '12rem',
     display: 'block',
-    margin: '2.4rem auto 1.6rem',
+    margin: '2.4rem auto 0',
     padding: '0.8rem 0.2rem',
     '&:hover': {
       backgroundColor: colors.g3,
@@ -105,10 +111,14 @@ const SignUp = () => {
     errors: null,
     successMessage: false,
     errorMessage: false,
-    errorDescription: ''
+    errorDescription: '',
+    selectedDate: new Date('2005-08-18T21:11:54')
   });
   const classes = useStyles();
 
+  const handleDateChange = (selectedDate) => {
+    setState({ ...state, selectedDate })
+  }
   const doSignUp = () => {
 
     let formData = populateFormData(state.fields);
@@ -172,6 +182,7 @@ const SignUp = () => {
       <Container maxWidth="xs">
         <h1>Join Female and More</h1>
 
+        <p>* Indicates required fields</p>
         {Object.keys(fields).map(
           field=>{
               let error;
@@ -182,19 +193,47 @@ const SignUp = () => {
 
               if(field === "country") {
                 return (
-                  <div className={`${field} ${classes.inputField} ${error} ${required}`}>
+                  <div 
+                  key={field}
+                  className={`${field} ${classes.inputField} ${error} ${required}`}>
                     <select
                       key={field}
                       className={classes.dropdown}
                       ref={comp=>fields[field].comp = comp}
                       placeholder={fields[field].label}
                     >
-                      <option>Select Country</option>
+                      <option>Select Country*</option>
                       {countriesList.map(
-                        country=><option value={country.name}>{country.name}</option>
+                        country=><option key={country.name} value={country.name}>{country.name}</option>
                       )}
                     </select>
                   </div>
+                )
+              } 
+              else if (field === "dobX") {
+                return(
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                    onChange={handleDateChange}
+                    value={state.selectedDate}
+                    key={field}
+                    margin="normal"
+                    className={`field ${field} ${classes.inputField} ${error} ${required}`}
+                    format="mm/dd/yyyy"
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                  </MuiPickersUtilsProvider>
+                )
+              } else if(field === "password" || field === "repeatPassword") {
+                return (
+                  <input type="password"
+                    key={field}
+                    ref={comp=>fields[field].comp = comp}
+                    className={`${field} ${classes.inputField} ${error} ${required}`}
+                    placeholder={fields[field].label}
+                  />
                 )
               } else {
                 return (

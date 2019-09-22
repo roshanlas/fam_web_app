@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   open: {
       width: '100%'
   },
-  logout: {
+  link: {
     display: 'block',
     color: '#868383',
     fontSize: '1.4em',
@@ -64,10 +64,15 @@ const Sidebar = (prop) => {
         <Container>
             <h1>Settings</h1>
             <Link 
-            className={classes.logout} 
+            className={classes.link} 
             onClick={logout}
             component={RouterLink} to="/">
                 Log Out
+            </Link>
+            <Link 
+            className={classes.link} 
+            component={RouterLink} to="/about">
+                About Female and More
             </Link>
         </Container>
       </div>
