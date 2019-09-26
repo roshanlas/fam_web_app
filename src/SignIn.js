@@ -101,8 +101,6 @@ const useStyles = makeStyles(theme => ({
 const SignIn = (props) => {
 
   const [globalState, setGlobalState] = useContext(AppContext);
-
-  const [globalState, setGlobalState] = useContext(AppContext);
   
   const [state, setState] = useState({
     fields: fields, 

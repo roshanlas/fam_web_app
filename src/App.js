@@ -16,6 +16,7 @@ import ForgotPassword from './ForgotPassword';
 import Questionnaire from './Questionnaire';
 import Story from './Story';
 import './App.css';
+import EditProfile from './EditProfile';
 
 export const AppContext = createContext();
 
@@ -60,6 +61,7 @@ const App = () => {
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/questionnaire" component={Questionnaire} />
             <PrivateRoute path="/story" component={Story} />
+            <PrivateRoute path="/edit-profile" component={EditProfile} />
         </Switch>
     </Router>
   </AppContext.Provider>    
