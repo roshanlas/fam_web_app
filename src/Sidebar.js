@@ -16,12 +16,11 @@ const useStyles = makeStyles({
     right: '0px',
     bottom: '56px',
     width: '0%',
-    // height: '100%',
     textAlign: 'left',
     background: colors.p3,
     zIndex: '10',
     transition: 'width 0.25s',
-    overflow: 'scroll'
+    overflowY: 'scroll'
   },
   open: {
       width: '100%'
@@ -64,26 +63,25 @@ const Sidebar = (prop) => {
             <Logo />
         </div>
         <Container>
-          <div>
-            <Link className={classes.link} component={RouterLink} to="/edit-profile">
-              Edit Profile
-              </Link>
-            <Link className={classes.link} component={RouterLink} to="/about">
-              About Female and More
-              </Link>
-            <Link className={classes.link}>
-              Privacy Settings
-              </Link>
-            <Link className={classes.link}>
-              Terms of Service
-              </Link>
-            <Link className={classes.link}>
-              Help
-              </Link>
-            <Link className={classes.link} onClick={logout} component={RouterLink} to="/">
-              Log Out
-              </Link>
-          </div>
+          <h1>Settings</h1>
+          <Link className={classes.link} component={RouterLink} to="/edit-profile">
+            Edit Profile
+          </Link>
+          <Link className={classes.link} component={RouterLink} to="/about">
+            About Female and More
+          </Link>
+          <Link className={classes.link}>
+            Privacy Settings
+          </Link>
+          <Link className={classes.link}>
+            Terms of Service
+          </Link>
+          <Link className={classes.link}>
+            Help
+          </Link>
+          <Link className={classes.link} onClick={logout} component={RouterLink} to="/">
+            Log Out
+          </Link>
         </Container>
       </div>
     )

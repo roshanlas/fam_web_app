@@ -23,12 +23,7 @@ export const AppContext = createContext();
 const App = () => {
 
   const [state, setState] = useState({
-    user: {
-      firstName: null,
-      lastName: null,
-      token: null,
-    },
-    loginStatus: localStorage.token ? true : false,
+    user: {}
   });
 
   useEffect(()=>{

@@ -101,9 +101,9 @@ const useStyles = makeStyles(theme => ({
 const SignIn = (props) => {
 
   const [globalState, setGlobalState] = useContext(AppContext);
-  
+
   const [state, setState] = useState({
-    fields: fields, 
+    fields:fields, 
     loading : false,
     errors: null,
     successMessage: false,
@@ -132,14 +132,6 @@ const SignIn = (props) => {
         if(res.ok) {
             // Parse json data 
             // Show success message
-
-            setGlobalState({...globalState, user: {
-              token: ret.token,
-              firstName: ret.firstName,
-              lastName: ret.lastName,
-            },
-            loginStatus: true,
-            })
             setState({ 
                 ...state, 
                 loading: false,
